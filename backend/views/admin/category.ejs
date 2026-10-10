@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Service Categories | Zaya Admin</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link rel="stylesheet" href="/admin-css/admin.css" />
+  </head>
+  <body>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-inner">
+        <div class="brand">
+          <div class="brand-icon"><i class="bi bi-flower1"></i></div>
+          <div class="brand-content"><h1>Zaya</h1><span>Service Listing</span></div>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="/admin/dashboard" class="nav-item"><i class="bi bi-house-fill"></i><span>Dashboard</span></a>
+          <a href="/admin/services" class="nav-item"><i class="bi bi-grid-3x3-gap"></i><span>Services</span></a>
+          <a href="/admin/categories" class="nav-item active"><i class="bi bi-tags"></i><span>Categories</span></a>
+          <a href="/admin/main-banners" class="nav-item"><i class="bi bi-image"></i><span>Main Banners</span></a>
+          <a href="/admin/mobile-banners" class="nav-item"><i class="bi bi-image"></i><span>Mobile Banners</span></a>
+          <a href="/admin/blogs" class="nav-item"><i class="bi bi-file-earmark-text"></i><span>Blogs</span></a>
+          <a href="/admin/gallery" class="nav-item"><i class="bi bi-images"></i><span>Gallery</span></a>
+          <a href="/admin/poster" class="nav-item"><i class="bi bi-card-image"></i><span>Posters</span></a>
+          <a href="/admin/tips" class="nav-item"><i class="bi bi-instagram"></i><span>Instagram Tips</span></a>
+          <a href="/admin/testimonials" class="nav-item"><i class="bi bi-chat-square-text"></i><span>Testimonials</span></a>
+          <a href="/admin/enquiries" class="nav-item"><i class="bi bi-inbox"></i><span>Enquiries</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+          <a href="/admin/logout" class="logout-link"><i class="bi bi-box-arrow-right"></i><span>Logout</span></a>
+        </div>
+      </div>
+    </aside>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <main class="main-content">
+      <header class="top-header">
+        <div class="header-left">
+          <button class="sidebar-toggle" id="sidebarToggle" type="button"><i class="bi bi-list"></i></button>
+        </div>
+        <div class="header-right">
+          <div class="header-user">
+            <div class="header-user-info"><strong>Zaya</strong><span>Admin</span></div>
+            <div class="header-user-avatar">
+              <img src="/assets/img/zaya/logo.png" alt="Admin" style="object-fit: contain" />
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="dashboard-content banners-page">
+        <div class="banners-page-header">
+          <div class="page-title-wrapper">
+            <h2>Service Categories</h2>
+            <div class="breadcrumb-custom">
+              <a href="/admin/dashboard">Dashboard</a>
+              <i class="bi bi-chevron-right"></i>
+              <a href="/admin/services">Services</a>
+              <i class="bi bi-chevron-right"></i>
+              <span>Categories</span>
+            </div>
+          </div>
+          <div class="d-flex gap-2 flex-wrap">
+            <a href="/admin/services" class="btn btn-outline-secondary">Back to Services</a>
+            <button
+              class="add-banner-btn border-0"
+              id="addCategoryButton"
+              type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#categoryModal"
+            >
+              <i class="bi bi-plus-lg"></i><span>Add Category</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="banners-toolbar">
+          <div class="banner-filter">
+            <select id="categoryStatusFilter" aria-label="Filter categories by status">
+              <option value="">All Status</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+            <i class="bi bi-chevron-down"></i>
+          </div>
+        </div>
+        <div id="categoryPageMessage" class="alert d-none" role="status"></div>
+        <div class="row g-3 banners-grid" id="categoriesGrid" aria-live="polite"></div>
+        <div class="banners-empty" id="categoriesEmpty" style="display: none">
+          <i class="bi bi-tags"></i>
+          <h4>No categories found</h4>
+          <p>Create a category before adding services.</p>
+        </div>
+      </div>
+    </main>
+
+    <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalTitle" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <form id="categoryForm">
+            <div class="modal-header">
+              <div>
+                <h5 class="modal-title" id="categoryModalTitle">Add Category</h5>
+                <p class="text-muted mb-0" id="categoryModalDescription">Add a new service category.</p>
+              </div>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row g-3">
+                <div class="col-12">
+                  <label for="categoryTitle" class="form-label">Category Title</label>
+                  <input
+                    type="text"
+                    id="categoryTitle"
+                    name="title"
+                    class="form-control"
+                    required
+                    maxlength="120"
+                  />
+                </div>
+                <div class="col-12 col-md-6">
+                  <label for="categoryAltText" class="form-label">Image Alt Text</label>
+                  <input type="text" id="categoryAltText" name="alt_text" class="form-control" maxlength="200" />
+                </div>
+                <div class="col-12 col-md-6">
+                  <label for="categorySortOrder" class="form-label">Sort Order</label>
+                  <input type="number" id="categorySortOrder" name="sort_order" class="form-control" min="0" value="0" />
+                </div>
+                <div class="col-12 col-md-6">
+                  <label for="categoryStatus" class="form-label">Status</label>
+                  <select id="categoryStatus" name="is_active" class="form-select">
+                    <option value="true" selected>Active</option>
+                    <option value="false">Inactive</option>
+                  </select>
+                </div>
+                <div class="col-12 col-md-6">
+                  <label for="categoryImage" class="form-label">Category Image</label>
+                  <input type="file" id="categoryImage" name="image" class="form-control" accept="image/jpeg,image/png,image/webp" />
+                  <div class="form-text" id="categoryImageHelp">Required for new categories. JPG, PNG, or WebP; maximum 2MB.</div>
+                  <img id="categoryImagePreview" class="img-fluid rounded mt-2 d-none" alt="Current category image" style="max-height: 160px" />
+                </div>
+              </div>
+              <div id="categoryFormMessage" class="alert d-none mt-3 mb-0" role="alert"></div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary" id="saveCategoryButton">
+                <span class="save-category-label">Save Category</span>
+                <span class="spinner-border spinner-border-sm d-none" aria-hidden="true"></span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/admin-js/main.js"></script>
+    <script src="/admin-js/category.js"></script>
+  </body>
+</html>

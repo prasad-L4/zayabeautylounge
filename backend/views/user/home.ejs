@@ -1,0 +1,1184 @@
+﻿<!doctype html>
+<html class="no-js" lang="zxx">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>zayabeautylounge | Home</title>
+    <meta name="author" content="themeholy" />
+    <meta name="description" content="Schun  - Spa & Wellness Salon" />
+    <meta name="keywords" content="Schun  - Spa & Wellness Salon" />
+    <meta name="robots" content="INDEX,FOLLOW" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,shrink-to-fit=no"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="57x57"
+      href="assets/img/zaya/logo.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="60x60"
+      href="assets/img/zaya/logo.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="72x72"
+      href="assets/img/zaya/logo.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="76x76"
+      href="assets/img/zaya/logo.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="114x114"
+      href="assets/img/zaya/logo.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="120x120"
+      href="assets/img/zaya/logo.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="144x144"
+      href="assets/img/zaya/logo.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="152x152"
+      href="assets/img/zaya/logo.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/img/zaya/logo.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="assets/img/zaya/logo.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/img/zaya/logo.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="96x96"
+      href="assets/img/zaya/logo.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/img/zaya/logo.png"
+    />
+    <link rel="manifest" href="assets/img/favicons/manifest.json" />
+    <meta name="msapplication-TileColor" content="#ffffff" />
+    <meta
+      name="msapplication-TileImage"
+      content="assets/img/zaya/logo.png"
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="preconnect" href="https://fonts.googleapis.com/" />
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/fontawesome.min.css" />
+    <link rel="stylesheet" href="assets/css/optima.css" />
+    <link rel="stylesheet" href="assets/css/imageRevealHover.css" />
+    <link rel="stylesheet" href="assets/css/magnific-popup.min.css" />
+    <link rel="stylesheet" href="assets/css/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <div class="mouseCursor cursor-outer"></div>
+    <div class="mouseCursor cursor-inner"></div>
+
+    <div id="preloader">
+      <div class="preloader-bg preloader-bg-one"></div>
+      <div class="preloader-bg preloader-bg-two"></div>
+      <div class="txt-loading ">
+        <span data-text-preloader="Z" class="letters-loading">Z</span>
+        <span data-text-preloader="A" class="letters-loading">A</span>
+        <span data-text-preloader="Y" class="letters-loading">Y</span>
+        <span data-text-preloader="A" class="letters-loading">A</span>
+        <p class="preloader-brand">BEAUTY LOUNGE</p>
+      </div>
+    </div>
+
+	<%- include('../partial/header') %>
+
+    <% if (desktopBanners.length || mobileBanners.length) { %>
+      <div class="th-hero-wrapper hero-1" id="hero">
+        <% const getSafeBannerLink = (url) =>
+          typeof url === "string" &&
+          (/^\/(?!\/)/.test(url) || /^https?:\/\//i.test(url))
+            ? url
+            : ""; %>
+        <% if (desktopBanners.length) { %>
+          <div
+            class="swiper th-slider hero-desktop-slider"
+            id="heroSlide1"
+            data-slider-options='<%= JSON.stringify({
+              effect: "fade",
+              loop: desktopBanners.length > 1,
+              speed: 1800,
+              autoplay: desktopBanners.length > 1
+                ? { delay: 5000, disableOnInteraction: false }
+                : false,
+            }) %>'
+          >
+            <div class="swiper-wrapper">
+              <% desktopBanners.forEach((banner) => { %>
+                <% const bannerLink = getSafeBannerLink(banner.link); %>
+                <div class="swiper-slide">
+                  <% if (bannerLink) { %>
+                    <a class="hero-banner-link" href="<%= bannerLink %>">
+                  <% } %>
+                  <img
+                    class="hero-banner-image"
+                    src="<%= banner.image %>"
+                    alt="<%= banner.title || banner.subtitle || 'Beauty salon banner' %>"
+                  />
+                  <% if (bannerLink) { %>
+                    </a>
+                  <% } %>
+                </div>
+              <% }); %>
+            </div>
+            <% if (desktopBanners.length > 1) { %>
+              <div class="slider-dots">
+                <div class="slider-pagination" data-slider-id="#heroSlide1"></div>
+              </div>
+            <% } %>
+          </div>
+        <% } %>
+
+        <% if (mobileBanners.length) { %>
+          <div
+            class="swiper th-slider hero-mobile-slider"
+            id="heroSlideMobile"
+            data-slider-options='<%= JSON.stringify({
+              effect: "fade",
+              loop: mobileBanners.length > 1,
+              speed: 1800,
+              autoplay: mobileBanners.length > 1
+                ? { delay: 5000, disableOnInteraction: false }
+                : false,
+            }) %>'
+          >
+            <div class="swiper-wrapper">
+              <% mobileBanners.forEach((banner) => { %>
+                <% const bannerLink = getSafeBannerLink(banner.link); %>
+                <div class="swiper-slide">
+                  <% if (bannerLink) { %>
+                    <a class="hero-banner-link" href="<%= bannerLink %>">
+                  <% } %>
+                  <img
+                    class="hero-banner-image"
+                    src="<%= banner.image %>"
+                    alt="<%= banner.title || banner.subtitle || 'Beauty salon banner' %>"
+                  />
+                  <% if (bannerLink) { %>
+                    </a>
+                  <% } %>
+                </div>
+              <% }); %>
+            </div>
+            <% if (mobileBanners.length > 1) { %>
+              <div class="slider-pagination hero-mobile-pagination"></div>
+            <% } %>
+          </div>
+        <% } %>
+      </div>
+    <% } %>
+    <section class="position-relative overflow-hidden space" id="service-sec">
+      <div class="container">
+        <div class="row justify-content-lg-between justify-content-center align-items-center">
+          <div class="col-lg-6">
+            <div class="title-area text-center text-lg-start">
+              <h2 class="sec-title text-anime-style-3 text-white">Our Beauty Services</h2>
+              <span class="title-img">
+                <img src="assets/img/theme-img/title_shape.svg" alt="Beauty Services" />
+              </span>
+            </div>
+          </div>
+    
+          <div class="col-lg-5">
+            <div class="sec-btn wow fadeInUp text-center text-lg-start">
+              <p class="sec-text2">
+                Discover professional beauty services at Zaya Beauty Lounge,
+                from bridal makeup and hair styling to skincare, nails and
+                personalized beauty care.
+              </p>
+            </div>
+          </div>
+        </div>
+    
+        <div class="row gy-4 justify-content-center">
+          <% (categories || []).forEach((category) => {
+            const categoryId = String(category._id);
+            const categoryName = category.title || category.name;
+            const categoryImage = category.image || "assets/img/zaya/ser-2.png";
+          %>
+            <div class="col-6 col-md-6 col-xl-4">
+              <div
+                class="th-service service-block zm-trigger"
+                data-zm="<%= categoryId %>"
+                role="button"
+                tabindex="0"
+                aria-haspopup="dialog"
+              >
+                <div class="box-img">
+                  <img src="<%= categoryImage %>" alt="<%= category.alt_text || categoryName %>" />
+                  <span class="zm-count"></span>
+                </div>
+                <h3 class="box-title">
+                  <a href="/services?category=<%= encodeURIComponent(categoryId) %>"><%= categoryName %></a>
+                </h3>
+              </div>
+            </div>
+          <% }); %>
+          <% if (!categories || !categories.length) { %>
+            <p class="text-center text-white">Services are being added soon. Please check back.</p>
+          <% } %>
+        </div>
+      </div>
+    
+      <div class="sec-btn mt-60 mb-0 text-center">
+        <a href="/services" class="th-btn2 th-icon">BROWSE ALL SERVICES</a>
+      </div>
+    </section>
+    
+    <div class="zm-overlay" id="zmOverlay" aria-hidden="true" data-whatsapp="918848899513">
+      <div class="zm-sheet" role="dialog" aria-modal="true" aria-label="Services">
+        <div class="zm-handle"><span></span></div>
+        <button type="button" class="zm-close" aria-label="Close">
+          <svg viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+    
+        <% (categories || []).forEach((category) => {
+          const categoryId = String(category._id);
+          const categoryName = category.title || category.name;
+          const categoryImage = category.image || "assets/img/zaya/ser-2.png";
+          const categoryServices = (services || []).filter((service) => {
+            if (service.categoryId) {
+              return String(service.categoryId) === categoryId;
+            }
+    
+            const legacyCategory = String(service.category || "").trim().toLowerCase();
+            return [category.name, category.title]
+              .filter(Boolean)
+              .some((name) => String(name).trim().toLowerCase() === legacyCategory);
+          });
+        %>
+          <div class="zm-panel" data-zm-panel="<%= categoryId %>">
+            <div class="zm-head">
+              <img class="zm-thumb" src="<%= categoryImage %>" alt="<%= category.alt_text || categoryName %>" />
+              <div class="zm-headtext">
+                <p class="zm-eyebrow">Browse collection</p>
+                <h3 class="zm-title"><%= categoryName %></h3>
+              </div>
+              <a class="zm-all" href="/services?category=<%= encodeURIComponent(categoryId) %>">View all in this category</a>
+            </div>
+            <div class="zm-body">
+              <div class="zm-grid">
+                <% categoryServices.forEach((service) => {
+                  const serviceImage =
+                    Array.isArray(service.images) && service.images.length
+                      ? service.images[0]
+                      : "assets/img/zaya/ser-5.jpg";
+                %>
+                  <article class="zm-card">
+                    <div class="zm-card__img">
+                      <img src="<%= serviceImage %>" alt="<%= service.title %>" loading="lazy" />
+                    </div>
+                    <div class="zm-card__body">
+                      <h4 class="zm-card__title"><%= service.title %></h4>
+                      <p class="zm-card__desc"><%= service.shortDescription %></p>
+                      <div class="zm-card__meta">
+                        <span class="zm-card__time">
+                          <%= service.duration !== null && service.duration !== undefined && service.duration !== ""
+                            ? `${service.duration} Mins`
+                            : "Not specified" %>
+                        </span>
+                        <span class="zm-card__price">
+                          <% if (service.price !== null && service.price !== undefined && service.price !== "") { %>
+                            &#8377; <%= Number(service.price).toLocaleString("en-IN") %>
+                          <% } else { %>
+                            Price varies
+                          <% } %>
+                        </span>
+                      </div>
+                      <button type="button" class="zm-book">Book Now</button>
+                    </div>
+                  </article>
+                <% }); %>
+                <% if (!categoryServices.length) { %>
+                  <p class="text-center">Services in this category are being added soon.</p>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+<!--==============================
+About Area
+==============================-->
+<div class="about-area overflow-hidden  space-bottom" id="about-sec">
+  <div class="container">
+    <div class="row gy-4">
+
+      <!-- Left Column -->
+      <div class="col-lg-5 mb-30 mb-xl-0">
+
+        <div class="title-area pe-xl-5">
+
+          <h2 class="sec-title text-anime-style-3 text-white">
+            About Us
+          </h2>
+
+          <span class="title-img">
+            <img
+              src="assets/img/theme-img/title_shape.svg"
+              alt="Zaya Beauty Lounge"
+            />
+          </span>
+
+          <h3 class="h4 text-white mt-30 text-uppercase">
+            Best Beauty Salon in Kollam
+            <span class="text-theme">Zaya Beauty Lounge</span>
+          </h3>
+
+        </div>
+
+        <div class="img-box1">
+          <div class="img1 image scale">
+            <img
+              src="assets/img/zaya/abt-3.jpg"
+              alt="Zaya Beauty Lounge"
+            />
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- Right Column -->
+      <div class="col-lg-7">
+
+        <div class="ps-xl-4">
+
+          <div class="img-box2">
+
+            <!-- Experience Highlight -->
+            <div class="discount-wrapp">
+
+              <h2 class="about-counter">
+                <span class="counter-number">10</span>+
+              </h2>
+
+              <div class="discount-tag">
+                <span class="discount-anime">
+             Years of Excellence in Beauty, Hair, Makeup & Wellness etc...
+                </span>
+              </div>
+
+            </div>
+
+
+            <!-- About Image -->
+            <div class="img2 image scale">
+              <img
+                src="assets/img/zaya/abt-2.jpg"
+                alt="Zaya Beauty Lounge Beauty Services"
+              />
+            </div>
+
+          </div>
+
+
+          <!-- Short About -->
+          <p class="sec-text">
+            Welcome to Zaya Beauty Lounge, where beauty meets luxury and
+            relaxation. Located in the heart of Kollam, we are dedicated to
+            creating beautiful experiences tailored to your unique style,
+            personality, and beauty needs.
+          </p>
+
+
+          <p class="sec-text mt-20">
+            With over 10 years of experience in the beauty industry, our team
+            combines professional expertise with a passion for making every
+            client feel confident, beautiful, and cared for.
+          </p>
+
+
+          <!-- Owner -->
+          <div class="client-box mt-40">
+
+            <div class="client-thumb-group">
+
+              <div class="thumb">
+                <img
+                  src="assets/img/zaya/abt-1.jpg"
+                  alt="Lasitha K.S"
+                />
+              </div>
+
+            
+
+              <h4 class="box-title">
+                Lasitha K.S
+                <span class="d-block text-theme">
+                  Owner & Renowned Makeup Artist
+                </span>
+              </h4>
+
+            </div>
+
+          </div>
+
+
+          <!-- Buttons -->
+          <div class="btn-group mt-50 about-cta-buttons">
+
+            <a
+              href="/about"
+              class="th-btn style1"
+            >
+              DISCOVER US MORE
+            </a>
+
+            <a target="_blank"
+              href="tel:+918848899513"
+              class="th-btn style2"
+            >
+              BOOK ONLINE
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Decorative Shape -->
+    <div
+      class="shape-mockup jumpAni d-none d-lg-block"
+      data-bottom="0%"
+      data-right="0%"
+    >
+      <img
+        src="assets/img/shape/element-1.png"
+        alt=""
+      />
+    </div>
+
+  </div>
+</div>
+
+
+<!--==============================
+About Highlights
+==============================-->
+<div class="overflow-hidden">
+  <div class="container">
+
+    <div class="counter-area bounce_animation">
+
+      <!-- Experience -->
+      <div class="counter-card_wrapp">
+        <div class="counter-card bounce__anim">
+          <div class="media-body">
+            <h3 class="box-number">
+              <span class="counter-number">10</span>+
+            </h3>
+            <p class="box-text">
+              Years of Experience
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Client Satisfaction -->
+      <div class="counter-card_wrapp">
+        <div class="counter-card bounce__anim">
+          <div class="media-body">
+            <h3 class="box-number">
+              <span class="counter-number">100</span>%
+            </h3>
+            <p class="box-text">
+              Client Satisfaction
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Personalized Care -->
+      <div class="counter-card_wrapp">
+        <div class="counter-card bounce__anim">
+          <div class="media-body">
+            <h3 class="box-number">
+              <span class="counter-number">100</span>%
+            </h3>
+            <p class="box-text">
+              Personalized Care
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Beauty Services -->
+      <div class="counter-card_wrapp">
+        <div class="counter-card bounce__anim">
+          <div class="media-body">
+            <h3 class="box-number">
+              <span class="counter-number">15</span>+
+            </h3>
+            <p class="box-text">
+              Beauty Services
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+   
+
+
+
+
+    <div class="video-area">
+      <div class="video-thumb-img">
+        <img
+          class="video-trigger-thumb"
+          src="<%= poster ? poster.image : 'assets/img/zaya/bnr-3.jpg' %>"
+          alt="<%= poster ? (poster.alt_text || poster.title || 'Zaya Beauty Lounge') : 'Zaya Beauty Lounge' %>"
+        />
+ 
+      </div>
+   
+    </div>
+    <div class="position-reletive overflow-hidden space">
+      <div class="container-fluid pe-xl-5 ps-xl-5">
+        <div class="row justify-content-center">
+          <div class="col-xl-8">
+            <div class="title-area text-center d-flex justify-content-center flex-column align-items-center">
+              <h2 class="sec-title text-white">Explore Schun Gallery</h2>
+              <span class="title-img d-flex align-items-center justify-content-center"
+                ><img src="assets/img/theme-img/title_shape.svg" alt="shape"
+              /></span>
+            </div>
+        
+          </div>
+        </div>
+        <div
+          class="swiper th-slider gallerySlider has-shadow"
+          id="gallerySlider"
+        data-slider-options='{"effect":"slide","loop":false,"spaceBetween":24,"paginationType":"progressbar","breakpoints":{"0":{"slidesPerView":1},"576":{"slidesPerView":2},"768":{"slidesPerView":2},"992":{"slidesPerView":3},"1200":{"slidesPerView":4}}}'
+        >
+        <div class="swiper-wrapper gallery-row">
+          <% (gallery || []).forEach((item) => { %>
+            <div class="swiper-slide">
+              <div class="gallery-card">
+                <div class="box-img th-clip-anim">
+                  <img
+                    class="th-anim-img gallery_img"
+                    data-animate="true"
+                    src="<%= item.image %>"
+                    alt="<%= item.alt_text || item.title || 'Zaya Beauty Lounge gallery' %>"
+                    loading="lazy"
+                  />
+                  <a
+                    href="<%= item.image %>"
+                    class="icon-btn th-popup-image"
+                    aria-label="View <%= item.alt_text || item.title || 'gallery image' %>"
+                  ><i class="far fa-eye"></i></a>
+                </div>
+              </div>
+            </div>
+          <% }); %>
+          <% if (!gallery || !gallery.length) { %>
+            <div class="swiper-slide">
+              <p class="text-center">Gallery images are being added soon.</p>
+            </div>
+          <% } %>
+        </div>
+        <div class="swiper-pagination gallery-pagination" data-slider-id="#gallerySlider"></div>
+      </div>
+    </div>
+     </div>
+    <section class="overflow-hidden position-relative " id="testi-sec">
+      <div class="container-fluid pe-xl-5 ps-xl-5">
+        <div class="title-area text-center d-flex flex-column justify-content-center align-items-center">
+          <h2 class="sec-title text-anime-style-3 text-white">
+            Our Happy Clients Feedbacks
+          </h2>
+          <span class="title-img d-flex flex-column justify-content-center align-items-center"
+            ><img src="assets/img/theme-img/title_shape.svg" alt="shape"
+          /></span>
+        </div>
+        <div class="slider-wrap">
+          <div
+            class="swiper th-slider has-shadow"
+            id="testiSlide2"
+            data-slider-options='{"paginationType": "progressbar","loop":false,"breakpoints": {"0":{"slidesPerView": 1},"576": {"slidesPerView": 1},"768": {"slidesPerView": 2},"1200": {"slidesPerView": 3}}}'
+          >
+            <div class="swiper-wrapper">
+              <% if (testimonials && testimonials.length) { %>
+                <% testimonials.forEach((testimonial) => {
+                  const rating = Math.max(0, Math.min(5, Math.round(Number(testimonial.rating) || 0)));
+                %>
+                  <div class="swiper-slide">
+                    <div class="testi-box">
+                      <% if (rating) { %>
+                        <span class="rating" role="img" aria-label="<%= rating %> out of 5 stars">
+                          <% for (let star = 0; star < rating; star += 1) { %>
+                            <i class="fa-sharp fa-solid fa-star-sharp" aria-hidden="true"></i>
+                          <% } %>
+                        </span>
+                      <% } %>
+                      <p class="box-text"><%= testimonial.content %></p>
+                      <div class="box-wrapp">
+                        <div class="box-profile">
+                          <div class="box-author">
+                            <img
+                              src="<%= testimonial.imageUrl || 'assets/img/testimonial/testi_1_1.png' %>"
+                              alt="<%= testimonial.name %>"
+                              loading="lazy"
+                            />
+                          </div>
+                          <div class="box-info">
+                            <h3 class="box-title"><%= testimonial.name %></h3>
+                            <span class="box-desig"><%= testimonial.designation || "Customer" %></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <% }); %>
+              <% } else { %>
+                <div class="swiper-slide">
+                  <p class="text-center">Client testimonials are being added soon.</p>
+                </div>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+<section class="choose-area position-relative overflow-hidden space">
+  <div class="container">
+
+    <!-- Section Heading -->
+    <div class="row justify-content-center">
+      <div class="col-lg-7">
+
+        <div class="title-area text-center">
+
+          <span class="sub-title style2 text-anime-style-2">
+            BEAUTY FAQ
+          </span>
+
+          <h2 class="sec-title text-white text-anime-style-3">
+            Frequently Asked Questions
+          </h2>
+
+          <p
+            class="sec-text5 mb-0 wow fadeInUp"
+            data-wow-delay=".3s"
+          >
+            Find answers to some of the most common questions about our
+            beauty, makeup, hair and skincare services.
+          </p>
+
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- FAQ Content -->
+    <div class="row gy-4">
+
+      <!-- Image -->
+      <div class="col-lg-5">
+
+        <div class="choose-img-box">
+
+          <div
+            class="img1 wow fadeInLeft global-img"
+            data-wow-delay=".3s"
+          >
+            <img
+              src="assets/img/zaya/faq.jpg"
+              alt="Zaya Beauty Lounge"
+            />
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- FAQ Accordion -->
+      <div class="col-lg-7">
+
+        <div
+          class="accordion-area accordion ps-xl-4"
+          id="faqAccordion"
+        >
+
+
+          <!-- FAQ 1 -->
+          <div
+            class="accordion-card style3 wow fadeInUp"
+            data-wow-delay=".1s"
+          >
+
+            <div
+              class="accordion-header"
+              id="collapse-item-1"
+            >
+
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapse-1"
+                aria-expanded="false"
+                aria-controls="collapse-1"
+              >
+
+            
+
+                What beauty services do you offer?
+
+              </button>
+
+            </div>
+
+
+            <div
+              id="collapse-1"
+              class="accordion-collapse collapse"
+              aria-labelledby="collapse-item-1"
+              data-bs-parent="#faqAccordion"
+            >
+
+              <div class="accordion-body">
+
+       
+
+                <p class="faq-text">
+                  We offer a wide range of beauty services including
+                  bridal makeup, hair color and styling, treatment
+                  facials, chemical essentials, nail essentials and
+                  waxing.
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- FAQ 2 -->
+          <div
+            class="accordion-card style3 active wow fadeInUp"
+            data-wow-delay=".3s"
+          >
+
+            <div
+              class="accordion-header"
+              id="collapse-item-2"
+            >
+
+              <button
+                class="accordion-button"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapse-2"
+                aria-expanded="true"
+                aria-controls="collapse-2"
+              >
+
+           
+
+                What types of bridal makeup do you offer?
+
+              </button>
+
+            </div>
+
+
+            <div
+              id="collapse-2"
+              class="accordion-collapse collapse show"
+              aria-labelledby="collapse-item-2"
+              data-bs-parent="#faqAccordion"
+            >
+
+              <div class="accordion-body">
+
+
+                <p class="faq-text">
+                  Our bridal makeup includes HD Natural Look, Glass Skin,
+                  HD Dewy Finish, Airbrush and Soft Glam looks. We
+                  personalize the makeup according to your features,
+                  preferences and occasion.
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- FAQ 3 -->
+          <div
+            class="accordion-card style3 wow fadeInUp"
+            data-wow-delay=".2s"
+          >
+
+            <div
+              class="accordion-header"
+              id="collapse-item-3"
+            >
+
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapse-3"
+                aria-expanded="false"
+                aria-controls="collapse-3"
+              >
+
+             
+
+                Do you provide hair color and styling services?
+
+              </button>
+
+            </div>
+
+
+            <div
+              id="collapse-3"
+              class="accordion-collapse collapse"
+              aria-labelledby="collapse-item-3"
+              data-bs-parent="#faqAccordion"
+            >
+
+              <div class="accordion-body">
+
+            
+
+                <p class="faq-text">
+                  Yes. We provide professional hair color and styling
+                  services designed to complement your appearance and
+                  create a look that suits your personal style.
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- FAQ 4 -->
+          <div
+            class="accordion-card style3 wow fadeInUp"
+            data-wow-delay=".5s"
+          >
+
+            <div
+              class="accordion-header"
+              id="collapse-item-4"
+            >
+
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapse-4"
+                aria-expanded="false"
+                aria-controls="collapse-4"
+              >
+
+                
+
+                What facial treatments are available?
+
+              </button>
+
+            </div>
+
+
+            <div
+              id="collapse-4"
+              class="accordion-collapse collapse"
+              aria-labelledby="collapse-item-4"
+              data-bs-parent="#faqAccordion"
+            >
+
+              <div class="accordion-body">
+
+          
+
+                <p class="faq-text">
+                  Our treatment facials are designed to cleanse,
+                  refresh and care for your skin. The appropriate
+                  treatment can be selected based on your skin's needs
+                  and your desired results.
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- FAQ 5 -->
+          <div
+            class="accordion-card style3 wow fadeInUp"
+            data-wow-delay=".7s"
+          >
+
+            <div
+              class="accordion-header"
+              id="collapse-item-5"
+            >
+
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapse-5"
+                aria-expanded="false"
+                aria-controls="collapse-5"
+              >
+
+
+                Should I book my appointment in advance?
+
+              </button>
+
+            </div>
+
+
+            <div
+              id="collapse-5"
+              class="accordion-collapse collapse"
+              aria-labelledby="collapse-item-5"
+              data-bs-parent="#faqAccordion"
+            >
+
+              <div class="accordion-body">
+
+          
+
+                <p class="faq-text">
+                  Advance booking is recommended, especially for bridal
+                  makeup, special occasions and appointments during busy
+                  periods. This helps us arrange the right time and
+                  service for you.
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+<section class="overflow-hidden  overflow-hidden" id="blog-sec">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-7">
+<div class="title-area text-center d-flex justify-content-center flex-column align-items-center">
+
+  <h2 class="sec-title text-white text-anime-style-3">
+    Beauty Insights
+  </h2>
+
+  <span class="title-img d-flex justify-content-center">
+    <img
+      src="assets/img/theme-img/title_shape.svg"
+      alt="Beauty Insights"
+    />
+  </span>
+
+  <p
+    class="sec-text5 mb-0 wow fadeInUp"
+    data-wow-delay=".3s"
+  >
+    Discover expert beauty tips, hair care advice, makeup inspiration
+    and skincare insights to help you look and feel your best.
+  </p>
+
+</div>
+
+      </div>
+    </div>
+    <!-- Section Heading -->
+    <div
+      class="row justify-content-lg-between justify-content-center  align-items-end"
+    >
+
+      <div class="col-lg-7">
+        <div class="title-area text-center text-lg-start">
+
+          <h2 class="sec-title text-anime-style-3 text-white">
+    
+          </h2>
+
+     
+
+        </div>
+      </div>
+
+
+      <div class="col-auto">
+    
+      </div>
+
+    </div>
+
+
+    <!-- Blog Cards -->
+    <div
+      class="swiper th-slider has-shadow"
+      id="beautyInsightsSlider"
+      data-slider-options='{"paginationType":"bullets","loop":false,"spaceBetween":24,"breakpoints":{"0":{"slidesPerView":1},"576":{"slidesPerView":2},"1200":{"slidesPerView":3}}}'
+    >
+      <div class="swiper-wrapper">
+        <% if (blogs && blogs.length) { %>
+          <% blogs.forEach((blog) => {
+            const blogUrl = `/blog/${encodeURIComponent(blog.slug)}`;
+            const publishedAt = blog.createdAt ? new Date(blog.createdAt) : null;
+            const hasPublishedAt = publishedAt && !Number.isNaN(publishedAt.getTime());
+            const excerpt = String(blog.content || "")
+              .replace(/<[^>]*>/g, " ")
+              .replace(/\s+/g, " ")
+              .trim()
+              .slice(0, 180);
+          %>
+            <div class="swiper-slide">
+              <div class="blog-card">
+                <div class="blog-meta">
+                  <a href="<%= blogUrl %>">
+                    <i class="fa-solid fa-user"></i>
+                    <%= blog.author || "Zaya Beauty Lounge" %>
+                  </a>
+                  <a href="/blog">
+                    <i class="fa-solid fa-tags"></i>
+                    Beauty Insights
+                  </a>
+                </div>
+        
+                <h3 class="box-title">
+                  <a href="<%= blogUrl %>"><%= blog.title %></a>
+                </h3>
+        
+                <div class="box-wrapp">
+                  <div class="box-img global-img">
+                    <a href="<%= blogUrl %>">
+                      <img
+                        src="<%= blog.imageUrl %>"
+                        alt="<%= blog.title %>"
+                        loading="lazy"
+                      />
+                    </a>
+                  </div>
+                  <% if (hasPublishedAt) { %>
+                    <a class="date" href="<%= blogUrl %>">
+                      <span class="day"><%= publishedAt.toLocaleDateString("en-US", { day: "2-digit" }) %></span>
+                      <span class="year"><%= publishedAt.toLocaleDateString("en-US", { month: "short", year: "numeric" }) %></span>
+                    </a>
+                  <% } %>
+                </div>
+        
+                <div class="box-content">
+                  <p class="box-text"><%= excerpt %><%= excerpt.length === 180 ? "..." : "" %></p>
+                  <a href="<%= blogUrl %>" class="th-btn2 style2 th-icon">READ MORE</a>
+                </div>
+              </div>
+            </div>
+          <% }); %>
+        <% } else { %>
+          <div class="swiper-slide">
+            <p class="text-center">Beauty insights are being added soon.</p>
+          </div>
+        <% } %>
+      </div>
+      <div class="slider-pagination"></div>
+    </div>
+  </div>
+    <div class=" d-flex justify-content-center mt-5">
+            <a href="/blog" class="th-btn style1">VIEW ALL INSIGHTS</a>
+          </div>
+</section>
+	<%- include('../partial/footer') %>
+    <div class="scroll-top style2"></div>
+    <script src="assets/js/vendor/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/swiper-bundle.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="assets/js/jquery.counterup.min.js"></script>
+    <script src="assets/js/circle-progress.js"></script>
+    <script src="assets/js/jquery-ui.min.js"></script>
+    <script src="assets/js/imagesloaded.pkgd.min.js"></script>
+    <script src="assets/js/isotope.pkgd.min.js"></script>
+    <script src="assets/js/nice-select.min.js"></script>
+    <script src="assets/js/wow.min.js"></script>
+    <script src="assets/js/gsap.min.js"></script>
+    <script src="assets/js/ScrollTrigger.min.js"></script>
+    <script src="assets/js/SplitText.js"></script>
+    <script src="assets/js/three.min.js"></script>
+    <script src="assets/js/imageRevealHover.js"></script>
+    <script src="assets/js/hover-img-effect.js"></script>
+    <script src="assets/js/jquery.ripples.js"></script>
+    <script src="assets/js/matter.min.js"></script>
+    <script src="assets/js/throwable.js"></script>
+    <script src="assets/js/Observer.min.js"></script>
+    <script type="module" src="assets/js/skew-slider/index.js"></script>
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>

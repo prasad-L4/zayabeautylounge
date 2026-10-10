@@ -1,0 +1,277 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>zayabeautylounge | Insights</title>
+    <meta name="author" content="themeholy" />
+    <meta name="description" content="Schun  - Spa & Wellness Salon" />
+    <meta name="keywords" content="Schun  - Spa & Wellness Salon" />
+    <meta name="robots" content="INDEX,FOLLOW" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,shrink-to-fit=no"
+    />
+      <link
+      rel="apple-touch-icon"
+      sizes="57x57"
+      href="assets/img/zaya/logo.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="60x60"
+      href="assets/img/zaya/logo.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="72x72"
+      href="assets/img/zaya/logo.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="76x76"
+      href="assets/img/zaya/logo.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="114x114"
+      href="assets/img/zaya/logo.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="120x120"
+      href="assets/img/zaya/logo.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="144x144"
+      href="assets/img/zaya/logo.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="152x152"
+      href="assets/img/zaya/logo.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/img/zaya/logo.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="assets/img/zaya/logo.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/img/zaya/logo.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="96x96"
+      href="assets/img/zaya/logo.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/img/zaya/logo.png"
+    />
+    <link rel="manifest" href="assets/img/favicons/manifest.json" />
+    <meta name="msapplication-TileColor" content="#ffffff" />
+    <meta
+      name="msapplication-TileImage"
+      content="assets/img/zaya/logo.png"
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="preconnect" href="https://fonts.googleapis.com/" />
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/fontawesome.min.css" />
+    <link rel="stylesheet" href="assets/css/optima.css" />
+    <link rel="stylesheet" href="assets/css/imageRevealHover.css" />
+    <link rel="stylesheet" href="assets/css/magnific-popup.min.css" />
+    <link rel="stylesheet" href="assets/css/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body class="body-shape">
+      <div class="mouseCursor cursor-outer"></div>
+    <div class="mouseCursor cursor-inner"></div>
+
+
+
+	<%- include('../partial/header') %>
+    <div
+      class="breadcumb-wrapper th-ripples"
+      data-bg-src="assets/img/bg/breadcumb-bg.jpg"
+    >
+      <div class="container">
+        <div class="breadcumb-content">
+          <h1 class="breadcumb-title text-anime-style-3">Insights</h1>
+          <ul class="breadcumb-menu wow fadeInUp">
+            <li><a href="/">Home</a></li>
+            <li>Insights</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <section class="th-blog-wrapper space-top ">
+      <div class="container">
+        
+        <div class="row gy-4">
+          <% if (blogs && blogs.length) { %>
+            <% blogs.forEach((blog) => {
+              const blogUrl = `/blog/${encodeURIComponent(blog.slug)}`;
+              const publishedAt = blog.createdAt ? new Date(blog.createdAt) : null;
+              const hasPublishedAt = publishedAt && !Number.isNaN(publishedAt.getTime());
+              const excerpt = String(blog.content || "")
+                .replace(/<[^>]*>/g, " ")
+                .replace(/\s+/g, " ")
+                .trim()
+                .slice(0, 180);
+            %>
+              <div class="col-lg-6 col-xl-4">
+                <div class="blog-card">
+                  <div class="blog-meta">
+                    <a href="<%= blogUrl %>">
+                      <i class="fa-solid fa-user"></i>
+                      <%= blog.author || "Zaya Beauty Lounge" %>
+                    </a>
+                    <a href="/blog">
+                      <i class="fa-solid fa-tags"></i>
+                      Beauty Insights
+                    </a>
+                  </div>
+
+                  <h3 class="box-title">
+                    <a href="<%= blogUrl %>"><%= blog.title %></a>
+                  </h3>
+
+                  <div class="box-wrapp">
+                    <div class="box-img global-img">
+                      <a href="<%= blogUrl %>">
+                        <img src="<%= blog.imageUrl %>" alt="<%= blog.title %>" loading="lazy" />
+                      </a>
+                    </div>
+                    <% if (hasPublishedAt) { %>
+                      <a class="date" href="<%= blogUrl %>">
+                        <span class="day"><%= publishedAt.toLocaleDateString("en-US", { day: "2-digit" }) %></span>
+                        <span class="year"><%= publishedAt.toLocaleDateString("en-US", { month: "short", year: "numeric" }) %></span>
+                      </a>
+                    <% } %>
+                  </div>
+
+                  <div class="box-content">
+                    <p class="box-text"><%= excerpt %><%= excerpt.length === 180 ? "..." : "" %></p>
+                    <a href="<%= blogUrl %>" class="th-btn2 style2 th-icon">READ MORE</a>
+                  </div>
+                </div>
+              </div>
+            <% }); %>
+          <% } else { %>
+            <div class="col-12">
+              <p class="text-center">Beauty insights are being added soon.</p>
+            </div>
+          <% } %>
+        </div>
+
+        <% if (totalPages > 1) {
+          const desktopPages = [];
+          if (totalPages <= 5) {
+            for (let pageNumber = 1; pageNumber <= totalPages; pageNumber += 1) desktopPages.push(pageNumber);
+          } else if (currentPage <= 2) {
+            desktopPages.push(1, 2, null, totalPages);
+          } else if (currentPage === 3) {
+            desktopPages.push(1, 2, 3, 4, null, totalPages);
+          } else if (currentPage >= totalPages - 2) {
+            desktopPages.push(1, null, totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+          } else {
+            desktopPages.push(1, null, currentPage - 1, currentPage, currentPage + 1, null, totalPages);
+          }
+
+          const mobilePages = [];
+          if (totalPages <= 4) {
+            for (let pageNumber = 1; pageNumber <= totalPages; pageNumber += 1) mobilePages.push(pageNumber);
+          } else if (currentPage <= 2) {
+            mobilePages.push(1, 2, null, totalPages);
+          } else if (currentPage >= totalPages - 1) {
+            mobilePages.push(1, null, totalPages - 1, totalPages);
+          } else {
+            mobilePages.push(1, null, currentPage, null, totalPages);
+          }
+        %>
+          <nav class="th-pagination blog-list-pagination text-center mt-30" aria-label="Blog pages">
+            <ul class="blog-pagination-desktop">
+              <% if (currentPage > 1) { %>
+                <li><a class="page-arrow" href="/blog?page=<%= currentPage - 1 %>" aria-label="Previous page"><img src="/assets/img/icon/arrow-left.svg" alt="" /></a></li>
+              <% } %>
+              <% desktopPages.forEach((pageNumber) => { %>
+                <% if (pageNumber === null) { %>
+                  <li><span class="page-ellipsis" aria-hidden="true">&hellip;</span></li>
+                <% } else if (pageNumber === currentPage) { %>
+                  <li><span class="active" aria-current="page"><%= String(pageNumber).padStart(2, "0") %></span></li>
+                <% } else { %>
+                  <li><a href="/blog?page=<%= pageNumber %>"><%= String(pageNumber).padStart(2, "0") %></a></li>
+                <% } %>
+              <% }); %>
+              <% if (currentPage < totalPages) { %>
+                <li><a class="page-arrow" href="/blog?page=<%= currentPage + 1 %>" aria-label="Next page"><img src="/assets/img/icon/arrow-right.svg" alt="" /></a></li>
+              <% } %>
+            </ul>
+            <ul class="blog-pagination-mobile">
+              <% if (currentPage > 1) { %>
+                <li><a class="page-arrow" href="/blog?page=<%= currentPage - 1 %>" aria-label="Previous page"><img src="/assets/img/icon/arrow-left.svg" alt="" /></a></li>
+              <% } %>
+              <% mobilePages.forEach((pageNumber) => { %>
+                <% if (pageNumber === null) { %>
+                  <li><span class="page-ellipsis" aria-hidden="true">&hellip;</span></li>
+                <% } else if (pageNumber === currentPage) { %>
+                  <li><span class="active" aria-current="page"><%= String(pageNumber).padStart(2, "0") %></span></li>
+                <% } else { %>
+                  <li><a href="/blog?page=<%= pageNumber %>"><%= String(pageNumber).padStart(2, "0") %></a></li>
+                <% } %>
+              <% }); %>
+              <% if (currentPage < totalPages) { %>
+                <li><a class="page-arrow" href="/blog?page=<%= currentPage + 1 %>" aria-label="Next page"><img src="/assets/img/icon/arrow-right.svg" alt="" /></a></li>
+              <% } %>
+            </ul>
+          </nav>
+        <% } %>
+
+      </div>
+    </section>
+	<%- include('../partial/footer') %>
+    <div class="scroll-top"></div>
+    <script src="assets/js/vendor/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/swiper-bundle.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="assets/js/jquery.counterup.min.js"></script>
+    <script src="assets/js/circle-progress.js"></script>
+    <script src="assets/js/jquery-ui.min.js"></script>
+    <script src="assets/js/imagesloaded.pkgd.min.js"></script>
+    <script src="assets/js/isotope.pkgd.min.js"></script>
+    <script src="assets/js/nice-select.min.js"></script>
+    <script src="assets/js/wow.min.js"></script>
+    <script src="assets/js/gsap.min.js"></script>
+    <script src="assets/js/ScrollTrigger.min.js"></script>
+    <script src="assets/js/SplitText.js"></script>
+    <script src="assets/js/three.min.js"></script>
+    <script src="assets/js/imageRevealHover.js"></script>
+    <script src="assets/js/hover-img-effect.js"></script>
+    <script src="assets/js/jquery.ripples.js"></script>
+    <script src="assets/js/matter.min.js"></script>
+    <script src="assets/js/throwable.js"></script>
+    <script src="assets/js/Observer.min.js"></script>
+    <script type="module" src="assets/js/skew-slider/index.js"></script>
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>
