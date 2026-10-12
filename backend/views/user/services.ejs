@@ -128,21 +128,29 @@
  
     <!-- Filters + search -->
     <div class="zs-toolbar">
-      <div class="zs-filters" role="tablist">
-        <button
-          type="button"
-          class="zs-pill <%= selectedCategory === 'all' ? 'is-active' : '' %>"
-          data-filter="all"
-        >All Services</button>
-        <% (categories || []).forEach((category) => { %>
+      <div class="zs-filter-slider">
+        <button type="button" class="zs-filter-arrow" data-filter-direction="previous" aria-label="Scroll categories left" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <div class="zs-filters" role="tablist" aria-label="Service categories">
           <button
             type="button"
-            class="zs-pill <%= selectedCategory === String(category._id) ? 'is-active' : '' %>"
-            data-filter="<%= category._id %>"
-          >
-            <%= category.name %>
-          </button>
-        <% }); %>
+            class="zs-pill <%= selectedCategory === 'all' ? 'is-active' : '' %>"
+            data-filter="all"
+          >All Services</button>
+          <% (categories || []).forEach((category) => { %>
+            <button
+              type="button"
+              class="zs-pill <%= selectedCategory === String(category._id) ? 'is-active' : '' %>"
+              data-filter="<%= category._id %>"
+            >
+              <%= category.name %>
+            </button>
+          <% }); %>
+        </div>
+        <button type="button" class="zs-filter-arrow" data-filter-direction="next" aria-label="Scroll categories right" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
       </div>
       <label class="zs-search">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
@@ -152,7 +160,7 @@
  
     <!-- Cards -->
     <div class="zs-grid" id="zsGrid">
-      <% (services || []).forEach((service) => {
+      <% (services || []).forEach((service, serviceIndex) => {
         const serviceCategory = (categories || []).find(
           (item) => item.name.toLowerCase() === (service.category || "").toLowerCase()
         );
@@ -175,7 +183,7 @@
           "Please let me know the available slots.\n" +
           "My preferred available time: ";
       %>
-        <article class="zs-card" data-category="<%= categoryKey %>">
+        <article class="zs-card" data-category="<%= categoryKey %>" <%= serviceIndex >= 12 ? "hidden" : "" %>>
           <a href="/services/<%= service.slug %>" class="zs-card__img">
             <img
               src="<%= serviceImage %>"
@@ -234,9 +242,57 @@
     const grid = document.getElementById("zsGrid");
     const search = document.getElementById("zsSearch");
     const emptyState = document.getElementById("zsEmpty");
+    const filters = document.querySelector(".zs-filters");
+    const previousFilterArrow = document.querySelector('[data-filter-direction="previous"]');
+    const nextFilterArrow = document.querySelector('[data-filter-direction="next"]');
     const cards = Array.from(grid.querySelectorAll(".zs-card"));
     const activeFilter = document.querySelector(".zs-pill.is-active");
+    const pageSize = 12;
     let activeCategory = activeFilter ? activeFilter.dataset.filter : "all";
+    let matchingCards = [];
+    let visibleCount = 0;
+    let observedCard = null;
+    let loadingMore = false;
+    let loadTimer = null;
+    let skeletonCards = [];
+    const loadMoreObserver = "IntersectionObserver" in window
+      ? new IntersectionObserver((entries) => {
+          if (entries.some((entry) => entry.isIntersecting && entry.target === observedCard)) {
+            showMoreCards(true);
+          }
+        }, { rootMargin: "300px 0px" })
+      : null;
+
+    function updateFilterArrows() {
+      const maxScroll = filters.scrollWidth - filters.clientWidth;
+      const hasOverflow = maxScroll > 1;
+      previousFilterArrow.hidden = !hasOverflow;
+      nextFilterArrow.hidden = !hasOverflow;
+      previousFilterArrow.disabled = filters.scrollLeft <= 1;
+      nextFilterArrow.disabled = filters.scrollLeft >= maxScroll - 1;
+    }
+
+    [previousFilterArrow, nextFilterArrow].forEach((button) => {
+      button.addEventListener("click", () => {
+        const direction = button.dataset.filterDirection === "next" ? 1 : -1;
+        filters.scrollBy({
+          left: direction * Math.max(filters.clientWidth * 0.75, 120),
+          behavior: "smooth",
+        });
+      });
+    });
+    filters.addEventListener("scroll", updateFilterArrows, { passive: true });
+    window.addEventListener("resize", updateFilterArrows);
+    if (activeFilter) {
+      const filterBounds = filters.getBoundingClientRect();
+      const activeBounds = activeFilter.getBoundingClientRect();
+      if (activeBounds.left < filterBounds.left) {
+        filters.scrollLeft -= filterBounds.left - activeBounds.left;
+      } else if (activeBounds.right > filterBounds.right) {
+        filters.scrollLeft += activeBounds.right - filterBounds.right;
+      }
+    }
+    updateFilterArrows();
 
     cards.forEach((card) => {
       const image = card.querySelector(".zs-card__img img");
@@ -251,18 +307,88 @@
       if (image.complete && image.naturalWidth === 0) hideBrokenImage();
     });
 
+    function showMoreCards(showSkeleton = false) {
+      if (loadingMore || visibleCount >= matchingCards.length) return;
+
+      if (observedCard && loadMoreObserver) {
+        loadMoreObserver.unobserve(observedCard);
+        observedCard = null;
+      }
+
+      const nextCards = matchingCards.slice(visibleCount, visibleCount + pageSize);
+      const revealCards = () => {
+        skeletonCards.forEach((skeleton) => skeleton.remove());
+        skeletonCards = [];
+        loadingMore = false;
+        nextCards.forEach((card) => {
+          card.hidden = false;
+        });
+        visibleCount += nextCards.length;
+
+        observedCard = loadMoreObserver && visibleCount < matchingCards.length
+          ? matchingCards[visibleCount - 1]
+          : null;
+        if (observedCard) loadMoreObserver.observe(observedCard);
+      };
+
+      if (showSkeleton) {
+        loadingMore = true;
+        const skeletonCount = Math.min(pageSize, matchingCards.length - visibleCount);
+        for (let index = 0; index < skeletonCount; index += 1) {
+          const skeleton = document.createElement("article");
+          skeleton.className = "zs-card zs-skeleton";
+          skeleton.setAttribute("aria-hidden", "true");
+          skeleton.innerHTML =
+            '<div class="zs-skeleton__image"></div>' +
+            '<div class="zs-skeleton__body">' +
+              '<span class="zs-skeleton__line zs-skeleton__line--title"></span>' +
+              '<span class="zs-skeleton__line"></span>' +
+              '<span class="zs-skeleton__line zs-skeleton__line--short"></span>' +
+            '</div>';
+          grid.appendChild(skeleton);
+          skeletonCards.push(skeleton);
+        }
+        loadTimer = window.setTimeout(() => {
+          loadTimer = null;
+          revealCards();
+        }, 400);
+      } else {
+        revealCards();
+      }
+    }
+
     function filterServices() {
       const query = search.value.trim().toLowerCase();
-      let visibleCount = 0;
-      cards.forEach((card) => {
+      if (loadMoreObserver) loadMoreObserver.disconnect();
+      if (loadTimer !== null) {
+        window.clearTimeout(loadTimer);
+        loadTimer = null;
+      }
+      skeletonCards.forEach((skeleton) => skeleton.remove());
+      skeletonCards = [];
+      loadingMore = false;
+      observedCard = null;
+      matchingCards = cards.filter((card) => {
         const matchesCategory =
           activeCategory === "all" ||
           card.dataset.category === activeCategory;
         const matchesSearch = !query || card.textContent.toLowerCase().includes(query);
-        card.hidden = !(matchesCategory && matchesSearch);
-        if (!card.hidden) visibleCount += 1;
+        return matchesCategory && matchesSearch;
       });
-      emptyState.style.display = visibleCount ? "none" : "block";
+      cards.forEach((card) => {
+        card.hidden = true;
+      });
+      visibleCount = 0;
+      emptyState.style.display = matchingCards.length ? "none" : "block";
+
+      if (loadMoreObserver) {
+        showMoreCards();
+      } else {
+        matchingCards.forEach((card) => {
+          card.hidden = false;
+        });
+        visibleCount = matchingCards.length;
+      }
     }
 
     document.querySelectorAll(".zs-pill").forEach((button) => {
@@ -274,6 +400,7 @@
       });
     });
     search.addEventListener("input", filterServices);
+    filterServices();
   })();
 </script>
 <div class="overflow-hidden space-bottom overflow-hidden">
