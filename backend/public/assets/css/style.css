@@ -29499,7 +29499,9 @@ span.select2-selection.select2-selection--single:focus {
 .zm__desc a { color: var(--theme-color); text-decoration: underline; }
 .zm__desc img, .zm__desc video, .zm__desc iframe { max-width: 100%; height: auto; border-radius: 10px; }
 .zm__desc table { width: 100%; display: block; overflow-x: auto; }
-
+.ser-text{
+  color: black;
+}
 .zm__block { margin-top: 24px; }
 .zm__block[hidden] { display: none; }
 .zm__sub {
