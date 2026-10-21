@@ -125,7 +125,7 @@
     </div>
 <section class="zs-section position-relative overflow-hidden" id="service-sec">
   <div class="container">
- 
+
     <!-- Filters + search -->
     <div class="zs-toolbar">
       <div class="zs-filter-slider">
@@ -157,7 +157,7 @@
         <input type="search" id="zsSearch" placeholder="Search services..." aria-label="Search services" />
       </label>
     </div>
- 
+
     <!-- Cards -->
     <div class="zs-grid" id="zsGrid">
       <% (services || []).forEach((service, serviceIndex) => {
@@ -183,7 +183,7 @@
           "Please let me know the available slots.\n" +
           "My preferred available time: ";
       %>
-        <article class="zs-card" data-category="<%= categoryKey %>" <%= serviceIndex >= 12 ? "hidden" : "" %>>
+        <article class="zs-card" data-category="<%= categoryKey %>" data-index="<%= serviceIndex %>" tabindex="0" role="button" aria-haspopup="dialog" <%= serviceIndex >= 12 ? "hidden" : "" %>>
           <a href="/services/<%= service.slug %>" class="zs-card__img">
             <img
               src="<%= serviceImage %>"
@@ -233,8 +233,79 @@
     <p class="zs-empty" id="zsEmpty" <%= services && services.length ? 'style="display:none"' : '' %>>
       <%= services && services.length ? "No services found. Try a different search or category." : "Services are being added soon. Please check back." %>
     </p>
- 
- 
+
+    <!-- ===== Modal data ===== -->
+    <%
+      const zsModalData = (services || []).map((s) => ({
+        title: s.title || "",
+        category: s.category || "",
+        shortDescription: s.shortDescription || "",
+        content: s.content || "",
+        tags: Array.isArray(s.tags) ? s.tags : [],
+        images: Array.isArray(s.images) && s.images.length ? s.images : ["assets/img/zaya/ser-5.jpg"],
+        duration: (s.duration !== null && s.duration !== undefined && s.duration !== "") ? `${s.duration} Mins` : "Not specified",
+        price: (s.price !== null && s.price !== undefined && s.price !== "") ? `₹ ${Number(s.price).toLocaleString("en-IN")}` : "Price varies"
+      }));
+    %>
+    <script type="application/json" id="zsModalData"><%- JSON.stringify(zsModalData).replace(/</g, "\\u003c") %></script>
+
+    <!-- ===== Modal ===== -->
+    <div class="zm" id="zsModal" hidden>
+      <div class="zm__backdrop" data-zm-close></div>
+      <div class="zm__dialog" role="dialog" aria-modal="true" aria-labelledby="zmTitle" tabindex="-1">
+
+        <button type="button" class="zm__close" data-zm-close aria-label="Close details">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+
+        <div class="zm__media">
+          <img class="zm__img" id="zmImg" src="" alt="" />
+          <span class="zm__badge" id="zmCategory"></span>
+          <div class="zm__thumbs" id="zmThumbs"></div>
+        </div>
+
+        <div class="zm__content">
+          <div class="zm__scroll">
+            <h3 class="zm__title" id="zmTitle"></h3>
+
+            <div class="zm__chips">
+              <span class="zm__chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                <span id="zmDuration"></span>
+              </span>
+              <span class="zm__chip zm__chip--price" id="zmPrice"></span>
+            </div>
+
+            <p class="zm__lead" id="zmShort"></p>
+            <div class="zm__desc" id="zmDesc"></div>
+
+            <div class="zm__block" id="zmTagsWrap" hidden>
+              <h4 class="zm__sub">Includes</h4>
+              <div class="zm__tags" id="zmTags"></div>
+            </div>
+
+            <div class="zm__block">
+              <h4 class="zm__sub">Good to know</h4>
+              <ul class="zm__list">
+                <li>Final price depends on your hair length and thickness.</li>
+                <li>Share your preferred time on WhatsApp and we will confirm the slot.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="zm__actions">
+            <a href="#" class="zs-book zm__book" id="zmBook" target="_blank" rel="noopener">
+              Book Now
+              <span class="zs-book__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+              </span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 </section>
 <script>
@@ -402,6 +473,183 @@
     search.addEventListener("input", filterServices);
     filterServices();
   })();
+
+
+  (function () {
+  var modal = document.getElementById("zsModal");
+  var dataEl = document.getElementById("zsModalData");
+  var grid = document.getElementById("zsGrid");
+  if (!modal || !dataEl || !grid) return;
+
+  var services = [];
+  try { services = JSON.parse(dataEl.textContent); } catch (e) { return; }
+
+  // Move modal to <body> so no parent (overflow/transform) can clip it
+  document.body.appendChild(modal);
+
+  var dialog = modal.querySelector(".zm__dialog");
+  var $ = function (id) { return document.getElementById(id); };
+  var els = {
+    img: $("zmImg"), thumbs: $("zmThumbs"), category: $("zmCategory"),
+    title: $("zmTitle"), duration: $("zmDuration"), price: $("zmPrice"),
+    short: $("zmShort"), desc: $("zmDesc"),
+    tagsWrap: $("zmTagsWrap"), tags: $("zmTags"),
+    book: $("zmBook")
+  };
+
+  var lastFocus = null;
+  var closeTimer = null;
+
+  function bookingLink(s) {
+    var msg =
+      "Hello Zaya Beauty Lounge,\n\n" +
+      "I would like to book the following service:\n\n" +
+      "Service: " + s.title + "\n" +
+      "Duration: " + s.duration + "\n" +
+      "Price: " + s.price + "\n\n" +
+      "Please let me know the available slots.\n" +
+      "My preferred available time: ";
+    return "https://wa.me/918848899513?text=" + encodeURIComponent(msg);
+  }
+
+  // Light cleanup for editor HTML: removes scripts, inline handlers, javascript: links
+  function cleanHTML(html) {
+    var doc = new DOMParser().parseFromString(html, "text/html");
+    doc.querySelectorAll("script,style,iframe,object,embed,link,meta").forEach(function (n) { n.remove(); });
+    doc.body.querySelectorAll("*").forEach(function (el) {
+      Array.prototype.slice.call(el.attributes).forEach(function (a) {
+        var n = a.name.toLowerCase();
+        if (n.indexOf("on") === 0 || ((n === "href" || n === "src") && /^\s*javascript:/i.test(a.value))) {
+          el.removeAttribute(a.name);
+        }
+      });
+    });
+    doc.body.querySelectorAll("a[href]").forEach(function (a) {
+      a.setAttribute("target", "_blank");
+      a.setAttribute("rel", "noopener");
+    });
+    return doc.body.innerHTML;
+  }
+
+  function setImage(src, alt) {
+    els.img.src = src;
+    els.img.alt = alt;
+  }
+
+  function fill(s) {
+    els.title.textContent = s.title;
+    els.category.textContent = s.category;
+    els.duration.textContent = s.duration;
+    els.price.textContent = s.price;
+    els.short.textContent = s.shortDescription;
+
+    // Long content: HTML from editor or plain text
+    var content = (s.content || "").trim();
+    if (content && content !== s.shortDescription) {
+      var isHTML = /<\/?[a-z][\s\S]*>/i.test(content);
+      els.desc.classList.toggle("is-plain", !isHTML);
+      if (isHTML) els.desc.innerHTML = cleanHTML(content);
+      else els.desc.textContent = content;
+    } else {
+      els.desc.textContent = "";
+    }
+
+    // Images
+    setImage(s.images[0], s.title);
+    els.thumbs.innerHTML = "";
+    if (s.images.length > 1) {
+      s.images.forEach(function (src, i) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "zm__thumb" + (i === 0 ? " is-active" : "");
+        b.setAttribute("aria-label", "Show image " + (i + 1));
+        var im = document.createElement("img");
+        im.src = src; im.alt = ""; im.loading = "lazy";
+        b.appendChild(im);
+        b.addEventListener("click", function () {
+          setImage(src, s.title);
+          els.thumbs.querySelectorAll(".zm__thumb").forEach(function (t) { t.classList.remove("is-active"); });
+          b.classList.add("is-active");
+        });
+        els.thumbs.appendChild(b);
+      });
+    }
+
+    // Tags
+    els.tags.innerHTML = "";
+    var tags = (s.tags || []).filter(Boolean);
+    els.tagsWrap.hidden = !tags.length;
+    tags.forEach(function (t) {
+      var span = document.createElement("span");
+      span.className = "zm__tag";
+      span.textContent = t;
+      els.tags.appendChild(span);
+    });
+
+    els.book.href = bookingLink(s);
+    dialog.querySelector(".zm__scroll").scrollTop = 0;
+  }
+
+  function open(index, trigger) {
+    var s = services[index];
+    if (!s) return;
+    clearTimeout(closeTimer);
+    lastFocus = trigger || document.activeElement;
+    fill(s);
+    modal.hidden = false;
+    document.body.style.overflow = "hidden";
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { modal.classList.add("is-open"); });
+    });
+    dialog.focus();
+  }
+
+  function close() {
+    modal.classList.remove("is-open");
+    document.body.style.overflow = "";
+    closeTimer = setTimeout(function () {
+      modal.hidden = true;
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }, 300);
+  }
+
+  // Open on card click (title/image links are intercepted; "Book Now" still works)
+  grid.addEventListener("click", function (e) {
+    if (e.target.closest(".zs-book")) return;
+    var card = e.target.closest(".zs-card");
+    if (!card) return;
+    e.preventDefault();
+    open(Number(card.dataset.index), card);
+  });
+
+  grid.addEventListener("keydown", function (e) {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    var card = e.target.closest(".zs-card");
+    if (!card || e.target !== card) return;
+    e.preventDefault();
+    open(Number(card.dataset.index), card);
+  });
+
+  modal.addEventListener("click", function (e) {
+    if (e.target.closest("[data-zm-close]")) close();
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (modal.hidden) return;
+    if (e.key === "Escape") { close(); return; }
+    if (e.key === "Tab") {
+      var f = dialog.querySelectorAll("a[href], button:not([disabled])");
+      var visible = Array.prototype.filter.call(f, function (n) { return n.offsetParent !== null; });
+      if (!visible.length) return;
+      var first = visible[0], last = visible[visible.length - 1];
+      if (e.shiftKey && (document.activeElement === first || document.activeElement === dialog)) {
+        e.preventDefault(); last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault(); first.focus();
+      }
+    }
+  });
+})();
 </script>
 <div class="overflow-hidden space-bottom overflow-hidden">
   <div class="container">
