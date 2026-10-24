@@ -1,6 +1,6 @@
 @use "sass:math";
 :root {
-  --theme-color: #D83560;
+  --theme-color: #d8466d;
   --title-color: #121214;
   --body-color: #5e5e60;
   --smoke-color: #d4d4d4;
@@ -20329,7 +20329,7 @@ span.select2-selection.select2-selection--single:focus {
 }
 .video-thumb-img .video-trigger-thumb {
   position: relative;
-  border-radius: 324px;
+  border-radius: 10px;
   width: min(424px, 100%);
   height: auto;
   object-fit: cover;
@@ -23537,6 +23537,37 @@ span.select2-selection.select2-selection--single:focus {
 }
 .gallery-row {
   --bs-gutter-y: 1.9rem;
+}
+.gallery-masonry-grid {
+  column-count: 3;
+  column-gap: 12px;
+}
+.gallery-masonry-item {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 12px;
+  break-inside: avoid;
+}
+.gallery-masonry-grid .gallery-card .box-img {
+  overflow: hidden;
+  border-radius: 0;
+}
+.gallery-masonry-grid .gallery-card .box-img .gallery_img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: auto;
+  object-fit: cover;
+  border-radius: 0;
+}
+@media (max-width: 767px) {
+  .gallery-masonry-grid {
+    column-count: 2;
+    column-gap: 8px;
+  }
+  .gallery-masonry-item {
+    margin-bottom: 8px;
+  }
 }
 .gallery-area {
   position: relative;
@@ -29580,4 +29611,269 @@ span.select2-selection.select2-selection--single:focus {
 
 @media (prefers-reduced-motion: reduce) {
   .zm__backdrop, .zm__dialog, .zm__close { transition: none; }
+}
+
+
+/* Zaya Beauty Lounge: Why Choose Us
+   All classes start with "zwc-". Nothing here styles html, :root or body. */
+
+.zwc-section {
+  --zwc-bg: #0a0a0a;
+  --zwc-accent: #D83560;
+  --zwc-line: rgba(232, 201, 164, 0.55);
+ 
+  color: #fff;
+  font-family: "Work Sans", "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.7;
+  overflow: hidden;
+  padding: clamp(48px, 7vw, 96px) 0;
+}
+
+.zwc-section *,
+.zwc-section *::before,
+.zwc-section *::after {
+  box-sizing: border-box;
+}
+
+/* ---------- Layout ---------- */
+.zwc-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 11fr) minmax(0, 10fr);
+  grid-template-areas:
+    "intro media"
+    "diff  media";
+  column-gap: clamp(32px, 5vw, 80px);
+  row-gap: 44px;
+  align-items: center;
+  padding-left: clamp(24px, 6vw, 110px);
+}
+
+.zwc-intro { grid-area: intro; align-self: end; max-width: 660px; }
+.zwc-diff  { grid-area: diff;  align-self: start; max-width: 660px; }
+.zwc-media { grid-area: media; }
+
+/* ---------- Text ---------- */
+.zwc-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: 0 0 10px;
+  font-size: 0.8rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--zwc-accent);
+}
+
+.zwc-eyebrow::after {
+  content: "";
+  width: 72px;
+  height: 1px;
+  background: var(--zwc-accent);
+}
+
+.zwc-title {
+  margin: 0 0 20px;
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 500;
+  font-size: clamp(2.3rem, 4.6vw, 4rem);
+  line-height: 1.1;
+  color: #fff;
+}
+
+.zwc-title em {
+  font-style: italic;
+  color: var(--zwc-accent);
+}
+
+.zwc-text {
+  margin: 0;
+  font-size: clamp(0.98rem, 1.3vw, 1.08rem);
+  color: #fff;
+  opacity: 0.92;
+}
+
+.zwc-only-mobile { display: none; }
+
+/* ---------- Points ---------- */
+.zwc-points {
+  list-style: none;
+  margin: 36px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px 28px;
+}
+
+.zwc-point {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.zwc-ring {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border: 1px solid var(--zwc-line);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.zwc-ring svg {
+  width: 28px;
+  height: 28px;
+  fill: none;
+  stroke: var(--zwc-accent);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.zwc-label {
+  font-size: 0.98rem;
+  line-height: 1.4;
+  color: #fff;
+}
+
+/* ---------- Media (desktop) ---------- */
+.zwc-media {
+  position: relative;
+  align-self: stretch;
+  min-height: 620px;
+}
+
+.zwc-photo {
+  position: absolute;
+  overflow: hidden;
+}
+
+.zwc-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.zwc-photo-main {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 22%;
+  border-top-left-radius: 70% 34%;
+}
+
+.zwc-media::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(22% - 22px);
+  right: 22px;
+  border: 1px solid var(--zwc-line);
+  border-right: 0;
+  border-bottom: 0;
+  border-top-left-radius: 70% 34%;
+  pointer-events: none;
+}
+
+.zwc-photo-towels {
+  left: 0;
+  bottom: 0;
+  width: 27%;
+  aspect-ratio: 242 / 420;
+  border: 1px solid var(--zwc-line);
+  border-radius: 999px 999px 0 0;
+  background: #1a1410;
+}
+
+.zwc-photo-brushes { display: none; }
+
+.zwc-leaf {
+  position: absolute;
+  z-index: 1;
+  top: 6%;
+  left: 2%;
+  width: 22%;
+  max-width: 190px;
+  fill: none;
+  stroke: var(--zwc-line);
+  stroke-width: 1;
+  pointer-events: none;
+}
+
+/* ---------- Tablet ---------- */
+@media (max-width: 1024px) {
+  .zwc-points { grid-template-columns: 1fr; }
+  .zwc-media { min-height: 520px; }
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 767px) {
+  .zwc-section { padding: 48px 0 56px; }
+
+  .zwc-inner {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "intro"
+      "media"
+      "diff";
+    row-gap: 36px;
+    padding: 0 22px;
+  }
+
+  .zwc-intro,
+  .zwc-diff { max-width: none; align-self: auto; }
+
+  .zwc-only-desktop { display: none; }
+  .zwc-only-mobile  { display: inline; }
+
+  .zwc-title { font-size: clamp(2.3rem, 11vw, 3rem); }
+
+  .zwc-points {
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 14px;
+    margin-top: 28px;
+  }
+
+  .zwc-point { gap: 12px; }
+  .zwc-ring { width: 54px; height: 54px; }
+  .zwc-ring svg { width: 24px; height: 24px; }
+  .zwc-label { font-size: 0.92rem; }
+
+  .zwc-leaf { display: none; }
+
+  .zwc-media {
+    min-height: 0;
+    height: clamp(330px, 98vw, 500px);
+    margin: 0 -4px;
+  }
+
+  .zwc-media::before { display: none; }
+
+  .zwc-photo-main {
+    left: 24%;
+    border-radius: 56px 36px 36px 36px;
+    border: 1px solid var(--zwc-line);
+  }
+
+  .zwc-photo-brushes,
+  .zwc-photo-towels {
+    display: block;
+    left: 2%;
+    width: 36%;
+    aspect-ratio: 1;
+    border: 2px solid var(--zwc-accent);
+    border-radius: 50%;
+    background: #1a1410;
+  }
+
+  .zwc-photo-brushes { top: 8%; }
+  .zwc-photo-towels  { top: auto; bottom: 8%; }
+}
+
+/* ---------- Small phones ---------- */
+@media (max-width: 400px) {
+  .zwc-points { grid-template-columns: 1fr; }
 }

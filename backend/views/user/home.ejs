@@ -101,6 +101,36 @@
     <link rel="stylesheet" href="assets/css/magnific-popup.min.css" />
     <link rel="stylesheet" href="assets/css/swiper-bundle.min.css" />
     <link rel="stylesheet" href="assets/css/style.css" />
+    <style>
+      .home-about-story__row {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: center;
+        gap: clamp(2rem, 5vw, 5rem);
+      }
+
+      .home-about-story__copy {
+        min-width: 0;
+      }
+
+      .home-about-story .home-about-story__image {
+        width: 100%;
+        max-width: none;
+        flex: none;
+      }
+
+      @media (max-width: 991px) {
+        .home-about-story__row {
+          grid-template-columns: minmax(0, 1fr);
+          gap: 2rem;
+        }
+
+        .home-about-story__image {
+          max-width: 500px;
+          margin-inline: auto;
+        }
+      }
+    </style>
   </head>
   <body>
     <div class="mouseCursor cursor-outer"></div>
@@ -114,7 +144,7 @@
         <span data-text-preloader="A" class="letters-loading">A</span>
         <span data-text-preloader="Y" class="letters-loading">Y</span>
         <span data-text-preloader="A" class="letters-loading">A</span>
-        <p class="preloader-brand">BEAUTY LOUNGE</p>
+<p class="preloader-brand">BEAUTY LOUNGE BY LASITHA</p>
       </div>
     </div>
 
@@ -204,7 +234,78 @@
         <% } %>
       </div>
     <% } %>
-    <section class="position-relative overflow-hidden space" id="service-sec">
+
+
+
+
+<div class="about-area3 home-about-story position-relative pt-80" id="about-sec">
+  <div class="container">
+    <div class="home-about-story__row">
+
+      <!-- About Content -->
+      <div class="home-about-story__copy">
+
+        <div class="title-area mb-30">
+          <h2 class="sec-title text-anime-style-3 text-white">
+            The Art of Timeless Beauty
+          </h2>
+
+          <p class="sec-text4 mb-0 wow fadeInUp" data-wow-delay=".3s">
+            Welcome to Zaya by Lasitha, where luxury meets artistry.
+            Founded by renowned makeup artist and educator Lasitha,
+            Zaya is a destination for those who appreciate refined beauty,
+            flawless transformations, and an experience inspired by
+            celebrity glamour.
+          </p>
+        </div>
+
+        <h4 class="h6 text-theme wow fadeInUp" data-wow-delay=".4s">
+          BEAUTY BEYOND EXPECTATIONS
+        </h4>
+
+        <p class="sec-text mb-20 wow fadeInUp" data-wow-delay=".5s">
+          Every face tells a story, and every transformation deserves
+          an artistic touch. From breathtaking bridal looks to elegant
+          party makeup and personalised beauty treatments, we celebrate
+          your individuality with sophistication, precision, and care.
+        </p>
+
+        <p class="sec-text mb-20 wow fadeInUp" data-wow-delay=".6s">
+          With over 10 years of experience in the beauty industry,
+          Lasitha brings exceptional expertise, a passion for perfection,
+          and a deep understanding of modern beauty to every service.
+          Her signature approach combines professional techniques
+          with an eye for detail to create looks that feel as beautiful
+          as they appear.
+        </p>
+
+        <p class="sec-text mb-20 wow fadeInUp" data-wow-delay=".7s">
+          At Zaya, we believe luxury lies in the details. Every visit
+          is an opportunity to feel confident, embrace your beauty,
+          and experience personalised care in an atmosphere of elegance.
+          Discover a world where your beauty takes centre stage.
+        </p>
+
+      </div>
+
+      <!-- About Image -->
+      <div class="img-box3 about-story-image home-about-story__image">
+        <div class="img2 reveal">
+          <img
+            src="assets/img/zaya/abt-1.jpg"
+            alt="Lasitha – Founder and Makeup Artist at Zaya by Lasitha"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+    <section class="position-relative  overflow-hidden space" id="service-sec">
       <div class="container">
         <div class="row justify-content-lg-between justify-content-center align-items-center">
           <div class="col-lg-6">
@@ -228,12 +329,12 @@
         </div>
     
         <div class="row gy-4 justify-content-center">
-          <% (categories || []).forEach((category) => {
+          <% (categories || []).slice(0, 8).forEach((category) => {
             const categoryId = String(category._id);
             const categoryName = category.title || category.name;
             const categoryImage = category.image || "assets/img/zaya/ser-2.png";
           %>
-            <div class="col-6 col-md-6 col-xl-4">
+            <div class="col-6 col-md-4 col-xl-3">
               <div
                 class="th-service service-block zm-trigger"
                 data-zm="<%= categoryId %>"
@@ -300,6 +401,8 @@
                     Array.isArray(service.images) && service.images.length
                       ? service.images[0]
                       : "assets/img/zaya/ser-5.jpg";
+                  const hasDuration = service.duration !== null && service.duration !== undefined && service.duration !== "";
+                  const hasPrice = service.price !== null && service.price !== undefined && service.price !== "";
                 %>
                   <article class="zm-card">
                     <div class="zm-card__img">
@@ -308,20 +411,20 @@
                     <div class="zm-card__body">
                       <h4 class="zm-card__title"><%= service.title %></h4>
                       <p class="zm-card__desc"><%= service.shortDescription %></p>
-                      <div class="zm-card__meta">
-                        <span class="zm-card__time">
-                          <%= service.duration !== null && service.duration !== undefined && service.duration !== ""
-                            ? `${service.duration} Mins`
-                            : "Not specified" %>
-                        </span>
-                        <span class="zm-card__price">
-                          <% if (service.price !== null && service.price !== undefined && service.price !== "") { %>
-                            &#8377; <%= Number(service.price).toLocaleString("en-IN") %>
-                          <% } else { %>
-                            Price varies
+                      <% if (hasDuration || hasPrice) { %>
+                        <div class="zm-card__meta">
+                          <% if (hasDuration) { %>
+                            <span class="zm-card__time">
+                              <%= service.duration %> Mins
+                            </span>
                           <% } %>
-                        </span>
-                      </div>
+                          <% if (hasPrice) { %>
+                            <span class="zm-card__price">
+                            &#8377; <%= Number(service.price).toLocaleString("en-IN") %>
+                            </span>
+                          <% } %>
+                        </div>
+                      <% } %>
                       <button type="button" class="zm-book">Book Now</button>
                     </div>
                   </article>
@@ -335,10 +438,13 @@
         <% }); %>
       </div>
     </div>
-<!--==============================
+
+
+
+    <!--==============================
 About Area
 ==============================-->
-<div class="about-area overflow-hidden  space-bottom" id="about-sec">
+<div class="about-area overflow-hidden space-bottom  " id="about-sec">
   <div class="container">
     <div class="row gy-4">
 
@@ -359,8 +465,8 @@ About Area
           </span>
 
           <h3 class="h4 text-white mt-30 text-uppercase">
-            Best Beauty Salon in Kollam
-            <span class="text-theme">Zaya Beauty Lounge</span>
+          Zaya Beauty Lounge 
+            <span class="text-theme">Best Beauty Salon in Kollam</span>
           </h3>
 
         </div>
@@ -460,7 +566,7 @@ About Area
               href="/about"
               class="th-btn style1"
             >
-              DISCOVER US MORE
+            DISCOVER MORE ABOUT US
             </a>
 
             <a target="_blank"
@@ -498,6 +604,124 @@ About Area
 <!--==============================
 About Highlights
 ==============================-->
+
+   
+
+
+
+
+    <div class="video-area">
+      <div
+        class="swiper th-slider poster-slider"
+        id="posterSlider"
+        data-slider-options='{"effect":"slide","loop":<%= (posters || []).length > 1 ? "true" : "false" %>,"autoplay":{"delay":5000,"disableOnInteraction":false},"paginationType":"bullets","breakpoints":{"0":{"slidesPerView":1}}}'
+      >
+        <div class="swiper-wrapper">
+          <% if (posters && posters.length) { %>
+            <% posters.forEach((item) => { %>
+              <div class="swiper-slide">
+                <div class="video-thumb-img">
+                  <img
+                    class="video-trigger-thumb"
+                    src="<%= item.image %>"
+                    alt="<%= item.alt_text || item.title || 'Zaya Beauty Lounge' %>"
+                  />
+                </div>
+              </div>
+            <% }); %>
+          <% } else { %>
+            <div class="swiper-slide">
+              <div class="video-thumb-img">
+                <img
+                  class="video-trigger-thumb"
+                  src="assets/img/zaya/bnr-3.jpg"
+                  alt="Zaya Beauty Lounge"
+                />
+              </div>
+            </div>
+          <% } %>
+        </div>
+
+      </div>
+    </div>
+
+    <section class="zwc-section" aria-labelledby="zwc-title-1">
+  <div class="zwc-inner">
+ 
+    <!-- Block 1: Why choose us -->
+    <div class="zwc-intro">
+   
+      <h2 class="zwc-title" id="zwc-title-1">Why Choose <em>Zaya</em></h2>
+      <p class="zwc-text">At Zaya Beauty Lounge, beauty is personal. We combine professional expertise, attention to detail, and quality products to create an experience that helps you look and feel your best. From everyday beauty care to your most special occasions, every service is tailored to your needs.</p>
+    </div>
+ 
+    <!-- Images -->
+    <div class="zwc-media">
+      <svg class="zwc-leaf" viewBox="0 0 220 260" aria-hidden="true">
+        <path d="M30 240C20 170 40 90 120 14c20 60 10 130-90 226z"/>
+        <path d="M30 240C60 170 90 110 120 14"/>
+        <path d="M44 150c40-10 90 8 150 50-60 18-120 0-150-50z"/>
+        <path d="M60 205c30-30 80-40 140-25"/>
+      </svg>
+ 
+      <div class="zwc-photo zwc-photo-main">
+        <picture>
+          <source media="(max-width: 767px)" srcset="assets/img/zaya/abt-4.jpg">
+          <img src="assets/img/zaya/abt-4.jpg" alt="Luxury styling chairs and lit mirrors at Zaya Beauty Lounge" loading="lazy">
+        </picture>
+      </div>
+ 
+      <div class="zwc-photo zwc-photo-brushes">
+        <img src="/assets/img/zaya/abt-7.jpg" alt="Makeup brushes in a marble holder" loading="lazy">
+      </div>
+ 
+      <div class="zwc-photo zwc-photo-towels">
+        <picture>
+          <source media="(max-width: 767px)" srcset="assets/img/zaya/abt-6.jpg">
+          <img src="/assets/img/zaya/abt-6.jpg" alt="Fresh rolled towels on a marble counter" loading="lazy">
+        </picture>
+      </div>
+    </div>
+ 
+    <!-- Block 2: The Zaya difference + points -->
+    <div class="zwc-diff">
+   
+      <h2 class="zwc-title" id="zwc-title-2">
+        <span class="zwc-only-desktop">Beauty With <em>Care</em></span>
+        <span class="zwc-only-mobile">The <em>Zaya</em> Difference</span>
+      </h2>
+      <p class="zwc-text">We believe every client deserves individual attention and exceptional care. Our beauty professionals take the time to understand your preferences and deliver personalised services in a welcoming, relaxing environment.</p>
+ 
+      <ul class="zwc-points">
+        <li class="zwc-point">
+          <span class="zwc-ring"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="18" r="3"/><circle cx="18" cy="18" r="3"/><path d="M8 16L18 3M16 16L6 3"/></svg></span>
+          <span class="zwc-label">Experienced Beauty Professionals</span>
+        </li>
+        <li class="zwc-point">
+          <span class="zwc-ring"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="5"/><path d="M9 13.5L7 21l5-3 5 3-2-7.500"/><path d="M10 9l1.500 1.500L14.500 7.500"/></svg></span>
+          <span class="zwc-label">Expert Bridal and Occasion Makeup</span>
+        </li>
+        <li class="zwc-point">
+          <span class="zwc-ring"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span>
+          <span class="zwc-label">Hygienic and Sanitised Tools</span>
+        </li>
+        <li class="zwc-point">
+          <span class="zwc-ring"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h11v8H8l-3 3v-3H3z"/><path d="M17 9h4v8h-2v3l-3-3h-5v-2"/></svg></span>
+          <span class="zwc-label">Personalised Beauty Consultations</span>
+        </li>
+        <li class="zwc-point">
+          <span class="zwc-ring"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3h4v3h-4zM9 6h6v2l2 3v9a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-9l2-3z"/><path d="M7 14h10"/></svg></span>
+          <span class="zwc-label">Quality Beauty Products</span>
+        </li>
+        <li class="zwc-point">
+          <span class="zwc-ring"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12l9-9h9v9l-9 9z"/><circle cx="16" cy="8" r="1.500"/></svg></span>
+          <span class="zwc-label">Transparent and Fair Pricing</span>
+        </li>
+      </ul>
+    </div>
+ 
+  </div>
+</section>
 <div class="overflow-hidden">
   <div class="container">
 
@@ -563,23 +787,6 @@ About Highlights
 
   </div>
 </div>
-
-   
-
-
-
-
-    <div class="video-area">
-      <div class="video-thumb-img">
-        <img
-          class="video-trigger-thumb"
-          src="<%= poster ? poster.image : 'assets/img/zaya/bnr-3.jpg' %>"
-          alt="<%= poster ? (poster.alt_text || poster.title || 'Zaya Beauty Lounge') : 'Zaya Beauty Lounge' %>"
-        />
- 
-      </div>
-   
-    </div>
     <div class="position-reletive overflow-hidden space">
       <div class="container-fluid pe-xl-5 ps-xl-5">
         <div class="row justify-content-center">
@@ -633,7 +840,7 @@ About Highlights
       <div class="container-fluid pe-xl-5 ps-xl-5">
         <div class="title-area text-center d-flex flex-column justify-content-center align-items-center">
           <h2 class="sec-title text-anime-style-3 text-white">
-            Our Happy Clients Feedbacks
+            Our Happy Clients Feedback
           </h2>
           <span class="title-img d-flex flex-column justify-content-center align-items-center"
             ><img src="assets/img/theme-img/title_shape.svg" alt="shape"

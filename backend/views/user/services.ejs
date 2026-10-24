@@ -168,18 +168,15 @@
         const serviceImage = Array.isArray(service.images) && service.images.length
           ? service.images[0]
           : "assets/img/zaya/ser-5.jpg";
-        const serviceDuration = service.duration !== null && service.duration !== undefined && service.duration !== ""
-          ? `${service.duration} Mins`
-          : "Not specified";
-        const servicePrice = service.price !== null && service.price !== undefined && service.price !== ""
-          ? `₹ ${Number(service.price).toLocaleString("en-IN")}`
-          : "Price varies";
+        const hasDuration = service.duration !== null && service.duration !== undefined && service.duration !== "";
+        const hasPrice = service.price !== null && service.price !== undefined && service.price !== "";
         const bookingMessage =
           "Hello Zaya Beauty Lounge,\n\n" +
           "I would like to book the following service:\n\n" +
           `Service: ${service.title}\n` +
-          `Duration: ${serviceDuration}\n` +
-          `Price: ${servicePrice}\n\n` +
+          (hasDuration ? `Duration: ${service.duration} Mins\n` : "") +
+          (hasPrice ? `Price: ₹ ${Number(service.price).toLocaleString("en-IN")}\n` : "") +
+          "\n" +
           "Please let me know the available slots.\n" +
           "My preferred available time: ";
       %>
@@ -196,22 +193,24 @@
               <a href="/services/<%= service.slug %>"><%= service.title %></a>
             </h3>
             <p class="zs-card__desc"><%= service.shortDescription %></p>
-            <div class="zs-card__meta">
-              <span class="zs-card__time">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <circle cx="12" cy="12" r="9"/>
-                  <path d="M12 7v5l3 2"/>
-                </svg>
-                <%= serviceDuration %>
-              </span>
-              <span class="zs-card__price">
-                <% if (service.price !== null && service.price !== undefined && service.price !== "") { %>
-                  &#8377; <%= Number(service.price).toLocaleString("en-IN") %>
-                <% } else { %>
-                  Price varies
+            <% if (hasDuration || hasPrice) { %>
+              <div class="zs-card__meta">
+                <% if (hasDuration) { %>
+                  <span class="zs-card__time">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="12" r="9"/>
+                      <path d="M12 7v5l3 2"/>
+                    </svg>
+                    <%= service.duration %> Mins
+                  </span>
                 <% } %>
-              </span>
-            </div>
+                <% if (hasPrice) { %>
+                  <span class="zs-card__price">
+                  &#8377; <%= Number(service.price).toLocaleString("en-IN") %>
+                  </span>
+                <% } %>
+              </div>
+            <% } %>
             <a
               href="https://wa.me/918848899513?text=<%= encodeURIComponent(bookingMessage) %>"
               class="zs-book"
@@ -243,8 +242,8 @@
         content: s.content || "",
         tags: Array.isArray(s.tags) ? s.tags : [],
         images: Array.isArray(s.images) && s.images.length ? s.images : ["assets/img/zaya/ser-5.jpg"],
-        duration: (s.duration !== null && s.duration !== undefined && s.duration !== "") ? `${s.duration} Mins` : "Not specified",
-        price: (s.price !== null && s.price !== undefined && s.price !== "") ? `₹ ${Number(s.price).toLocaleString("en-IN")}` : "Price varies"
+        duration: (s.duration !== null && s.duration !== undefined && s.duration !== "") ? `${s.duration} Mins` : "",
+        price: (s.price !== null && s.price !== undefined && s.price !== "") ? `₹ ${Number(s.price).toLocaleString("en-IN")}` : ""
       }));
     %>
     <script type="application/json" id="zsModalData"><%- JSON.stringify(zsModalData).replace(/</g, "\\u003c") %></script>
@@ -505,8 +504,9 @@
       "Hello Zaya Beauty Lounge,\n\n" +
       "I would like to book the following service:\n\n" +
       "Service: " + s.title + "\n" +
-      "Duration: " + s.duration + "\n" +
-      "Price: " + s.price + "\n\n" +
+      (s.duration ? "Duration: " + s.duration + "\n" : "") +
+      (s.price ? "Price: " + s.price + "\n" : "") +
+      "\n" +
       "Please let me know the available slots.\n" +
       "My preferred available time: ";
     return "https://wa.me/918848899513?text=" + encodeURIComponent(msg);
@@ -541,6 +541,9 @@
     els.category.textContent = s.category;
     els.duration.textContent = s.duration;
     els.price.textContent = s.price;
+    els.duration.parentElement.hidden = !s.duration;
+    els.price.hidden = !s.price;
+    els.duration.closest(".zm__chips").hidden = !s.duration && !s.price;
     els.short.textContent = s.shortDescription;
 
     // Long content: HTML from editor or plain text
@@ -790,7 +793,7 @@
       <div class="container-fluid pe-xl-5 ps-xl-5">
         <div class="title-area text-center d-flex flex-column justify-content-center align-items-center">
           <h2 class="sec-title text-anime-style-3 text-white">
-            Our Happy Clients Feedbacks
+            Our Happy Clients Feedback
           </h2>
           <span class="title-img d-flex flex-column justify-content-center align-items-center"
             ><img src="assets/img/theme-img/title_shape.svg" alt="shape"

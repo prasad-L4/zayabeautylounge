@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>zayabeautylounge | Portfolio</title>
+    <title>zayabeautylounge | Beauty Gallery</title>
     <meta name="author" content="themeholy" />
     <meta name="description" content="zayabeautylounge - Beauty Lounge" />
     <meta name="keywords" content="zayabeautylounge - Beauty Lounge" />
@@ -115,10 +115,10 @@
     >
       <div class="container">
         <div class="breadcumb-content">
-          <h1 class="breadcumb-title text-anime-style-3">Portfolio</h1>
+          <h1 class="breadcumb-title text-anime-style-3">Beauty Gallery</h1>
           <ul class="breadcumb-menu wow fadeInUp">
             <li><a href="home-beauty-salon.html">Home</a></li>
-            <li>Portfolio</li>
+            <li>Beauty Gallery</li>
           </ul>
         </div>
       </div>
@@ -144,7 +144,7 @@
               data-wow-delay=".3s"
             >
               I am Lasitha, founder of Zaya Beauty Lounge, a makeup artist
-              and educator with over 6 years of experience. What began as a
+              and educator with over 10+ years of experience. What began as a
               childhood love for makeup has grown into a passion for creating
               beauty, confidence and meaningful experiences for every client.
             </p>
@@ -267,10 +267,10 @@
             </div>
           </div>
         </div>
-                <div class="row gy-4 gallery-row">
+                <div class="gallery-masonry-grid" id="galleryGrid">
           <% if (gallery && gallery.length) { %>
             <% gallery.forEach((item) => { %>
-              <div class="col-md-6 col-xl-4">
+              <div class="gallery-masonry-item">
                 <div class="gallery-card">
                   <div class="box-img th-clip-anim">
                     <img
@@ -290,7 +290,7 @@
               </div>
             <% }); %>
           <% } else { %>
-            <div class="col-12">
+            <div class="gallery-masonry-empty">
               <p class="text-center">Gallery images are being added soon.</p>
             </div>
           <% } %>
@@ -310,7 +310,7 @@
             pages.push(1, null, currentPage - 1, currentPage, currentPage + 1, null, totalPages);
           }
         %>
-          <nav class="th-pagination gallery-list-pagination mt-60 text-center" aria-label="Gallery pages">
+          <nav class="th-pagination gallery-list-pagination mt-60 text-center" id="galleryPagination" aria-label="Gallery pages">
             <ul>
               <% if (currentPage > 1) { %>
                 <li><a href="/gallery?page=<%= currentPage - 1 %>" aria-label="Previous page"><img src="/assets/img/icon/arrow-left.svg" alt="" />Previous</a></li>
@@ -330,6 +330,16 @@
             </ul>
           </nav>
         <% } %>
+        <div
+          class="text-center mt-40"
+          id="galleryLoadMore"
+          data-next-page="<%= currentPage + 1 %>"
+          data-has-more="<%= hasMore %>"
+          <%= hasMore ? "" : "hidden" %>
+        >
+          <p id="galleryLoadStatus" role="status">Scroll to load more gallery images.</p>
+          <button type="button" class="th-btn" id="galleryLoadButton" hidden>Load more</button>
+        </div>
     </div>
 	<%- include('../partial/footer') %>
     <div class="scroll-top"></div>
@@ -356,5 +366,112 @@
     <script src="assets/js/Observer.min.js"></script>
     <script type="module" src="assets/js/skew-slider/index.js"></script>
     <script src="assets/js/main.js"></script>
+    <script>
+      (() => {
+        const grid = document.getElementById("galleryGrid");
+        const loadMore = document.getElementById("galleryLoadMore");
+        const status = document.getElementById("galleryLoadStatus");
+        const loadButton = document.getElementById("galleryLoadButton");
+        const pagination = document.getElementById("galleryPagination");
+
+        if (!grid || !loadMore || loadMore.dataset.hasMore !== "true") return;
+
+        let loading = false;
+        let observer;
+
+        function appendGalleryItem(item) {
+          const column = document.createElement("div");
+          column.className = "gallery-masonry-item";
+
+          const card = document.createElement("div");
+          card.className = "gallery-card";
+          const imageBox = document.createElement("div");
+          imageBox.className = "box-img th-clip-anim";
+          const image = document.createElement("img");
+          image.className = "th-anim-img gallery_img";
+          image.dataset.animate = "true";
+          image.src = item.image;
+          image.alt = item.alt_text || item.title || "Zaya Beauty Lounge gallery";
+          image.loading = "lazy";
+
+          const link = document.createElement("a");
+          link.href = item.image;
+          link.className = "icon-btn th-popup-image";
+          link.setAttribute(
+            "aria-label",
+            `View ${item.alt_text || item.title || "gallery image"}`,
+          );
+          const icon = document.createElement("i");
+          icon.className = "far fa-eye";
+          link.appendChild(icon);
+          imageBox.append(image, link);
+          card.appendChild(imageBox);
+          column.appendChild(card);
+          grid.appendChild(column);
+
+          if (window.jQuery && jQuery.fn.magnificPopup) {
+            jQuery(link).magnificPopup({
+              type: "image",
+              mainClass: "mfp-zoom-in",
+              removalDelay: 260,
+              gallery: { enabled: true },
+            });
+          }
+        }
+
+        async function loadNextPage() {
+          if (loading || loadMore.dataset.hasMore !== "true") return;
+
+          loading = true;
+          if (observer) observer.unobserve(loadMore);
+          loadButton.hidden = true;
+          status.textContent = "Loading gallery images...";
+
+          try {
+            const page = Number(loadMore.dataset.nextPage);
+            const response = await fetch(`/gallery?page=${page}&format=json`, {
+              headers: { Accept: "application/json" },
+            });
+            if (!response.ok) {
+              throw new Error(`Gallery request failed with status ${response.status}.`);
+            }
+
+            const result = await response.json();
+            if (!Array.isArray(result.gallery)) {
+              throw new Error("The gallery response was invalid.");
+            }
+
+            result.gallery.forEach(appendGalleryItem);
+            loadMore.dataset.nextPage = String(page + 1);
+            loadMore.dataset.hasMore = String(result.hasMore);
+            if (result.hasMore) {
+              status.textContent = "Scroll to load more gallery images.";
+              if (observer) observer.observe(loadMore);
+              else loadButton.hidden = false;
+            } else {
+              loadMore.hidden = true;
+            }
+          } catch (error) {
+            console.error("Failed to load more gallery images:", error);
+            status.textContent = "Could not load more images. Please try again.";
+            loadButton.hidden = false;
+          } finally {
+            loading = false;
+          }
+        }
+
+        if (pagination) pagination.hidden = true;
+        if ("IntersectionObserver" in window) {
+          observer = new IntersectionObserver((entries) => {
+            if (entries.some((entry) => entry.isIntersecting)) loadNextPage();
+          }, { rootMargin: "300px 0px" });
+          observer.observe(loadMore);
+        } else {
+          status.textContent = "Load more gallery images.";
+          loadButton.hidden = false;
+        }
+        loadButton.addEventListener("click", loadNextPage);
+      })();
+    </script>
   </body>
 </html>

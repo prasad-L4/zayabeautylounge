@@ -19,7 +19,7 @@ router.get("/", async (req, res, next) => {
       categories,
       desktopBanners,
       mobileBanners,
-      poster,
+      posters,
       testimonials,
       gallery,
       blogs,
@@ -49,7 +49,7 @@ router.get("/", async (req, res, next) => {
         .sort({ createdAt: -1 })
         .lean(),
 
-      Poster.findOne({ is_active: true })
+      Poster.find({ is_active: true })
         .sort({ sort_order: 1, createdAt: -1 })
         .lean(),
 
@@ -80,7 +80,7 @@ router.get("/", async (req, res, next) => {
       categories,
       desktopBanners,
       mobileBanners,
-      poster,
+      posters,
       testimonials,
       gallery,
       blogs,
@@ -200,6 +200,7 @@ router.get("/gallery", async (req, res, next) => {
     const page = Math.max(parseInt(req.query.page) || 1, 1);
     const limit = 9;
     const skip = (page - 1) * limit;
+    const wantsJson = req.query.format === "json";
 
     const [gallery, totalGallery] = await Promise.all([
       Gallery.find({
@@ -218,14 +219,22 @@ router.get("/gallery", async (req, res, next) => {
     const totalPages = Math.ceil(totalGallery / limit);
 
     // If requested page does not exist
-    if (page > totalPages && totalPages > 0) {
+    if (!wantsJson && page > totalPages && totalPages > 0) {
       return res.redirect("/gallery?page=" + totalPages);
+    }
+
+    if (wantsJson) {
+      return res.json({
+        gallery,
+        hasMore: page < totalPages,
+      });
     }
 
     res.render("user/gallery", {
       gallery,
       currentPage: page,
       totalPages,
+      hasMore: page < totalPages,
     });
   } catch (error) {
     console.error("GALLERY PAGE ERROR:", error);
