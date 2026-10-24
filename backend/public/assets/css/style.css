@@ -29880,3 +29880,94 @@ span.select2-selection.select2-selection--single:focus {
 @media (max-width: 400px) {
   .zwc-points { grid-template-columns: 1fr; }
 }
+
+.bjx-section {
+  --bjx-black: #0b0b0c;
+  --bjx-card: rgba(18, 18, 20, 0.82);
+  --bjx-white: #ffffff;
+  --bjx-muted: rgba(255, 255, 255, 0.72);
+  --bjx-accent: #d8466d;
+  position: relative;
+ 
+  color: var(--bjx-white);
+  padding: 60px 20px 70px;
+  font-family: 'Montserrat', Arial, sans-serif;
+  overflow: hidden;
+}
+.bjx-section *, .bjx-section *::before, .bjx-section *::after { box-sizing: border-box; }
+ 
+/* ---------- Heading ---------- */
+.bjx-head { text-align: center; max-width: 760px; margin: 0 auto 36px; }
+.bjx-eyebrow {
+  display: inline-flex; align-items: center; gap: 14px;
+  font-size: 12px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--bjx-muted);
+}
+.bjx-eyebrow::before, .bjx-eyebrow::after { content: ""; width: 44px; height: 1px; background: var(--bjx-accent); }
+.bjx-title {
+  margin: 14px 0 12px; font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 500; font-size: clamp(40px, 6vw, 72px); line-height: 1.05; color: var(--bjx-white);
+}
+.bjx-title em { color: var(--bjx-accent); font-style: italic; }
+.bjx-sub { margin: 0; font-size: clamp(14px, 1.6vw, 17px); line-height: 1.7; color: var(--bjx-muted); font-weight: 300; }
+ 
+/* ---------- Video (full, uncropped 16:9) ---------- */
+.bjx-video {
+  position: relative; width: 100%; max-width: 85%; margin: 0 auto;
+  aspect-ratio: 16 / 9; border-radius: 22px; overflow: hidden;
+  background: #000; border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+}
+.bjx-video iframe {
+  position: absolute; inset: 0; width: 100%; height: 100%; border: 0;
+  pointer-events: none; /* hides YouTube hover controls / clicks */
+}
+.bjx-video::after { /* soft fade into the cards */
+  content: ""; position: absolute; inset: auto 0 0 0; height: 35%;
+  background: linear-gradient(to top, rgba(11, 11, 12, 0.85), transparent); pointer-events: none;
+}
+ 
+/* ---------- Cards ---------- */
+.bjx-cards {
+  position: relative; z-index: 2; max-width: 1100px;
+  margin: -90px auto 0; padding: 0 20px;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;
+}
+.bjx-card {
+  background: var(--bjx-card); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 20px;
+  padding: 26px 18px 24px; text-align: center; position: relative;
+  transition: transform 0.35s ease, border-color 0.35s ease;
+}
+.bjx-card:hover { transform: translateY(-6px); border-color: var(--bjx-accent); }
+.bjx-icon {
+  width: 54px; height: 54px; margin: 0 auto 14px; border-radius: 50%;
+  display: grid; place-items: center; border: 1px solid var(--bjx-accent);
+  background: rgba(216, 70, 109, 0.1);
+}
+.bjx-icon svg { width: 26px; height: 26px; stroke: var(--bjx-accent); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.bjx-num { font-family: 'Playfair Display', Georgia, serif; font-size: 44px; line-height: 1; color: var(--bjx-white); }
+.bjx-num span { color: var(--bjx-accent); }
+.bjx-label { margin: 8px 0 0; font-family: 'Playfair Display', Georgia, serif; font-size: 19px; color: var(--bjx-white); }
+.bjx-line { width: 34px; height: 2px; background: var(--bjx-accent); margin: 12px auto; border-radius: 2px; }
+.bjx-text { margin: 0; font-size: 13px; line-height: 1.7; color: var(--bjx-muted); font-weight: 300; }
+ 
+/* ---------- Tablet ---------- */
+@media (max-width: 992px) {
+  .bjx-cards { grid-template-columns: repeat(2, 1fr); margin-top: -50px; }
+}
+ 
+/* ---------- Mobile: video first, then cards below ---------- */
+@media (max-width: 600px) {
+  .bjx-section { padding: 44px 14px 50px; }
+  .bjx-eyebrow { font-size: 10px; letter-spacing: 0.28em; gap: 10px; }
+  .bjx-eyebrow::before, .bjx-eyebrow::after { width: 22px; }
+  .bjx-video { display: block; border-radius: 14px; }
+  .bjx-cards { grid-template-columns: 1fr; margin-top: 20px; padding: 0 4px; gap: 8px; }
+  .bjx-card { padding: 14px 9px; border-radius: 14px; }
+  .bjx-icon { width: 38px; height: 38px; margin-bottom: 10px; }
+  .bjx-icon svg { width: 19px; height: 19px; }
+  .bjx-num { font-size: 28px; }
+  .bjx-label { margin-top: 6px; font-size: 14px; }
+  .bjx-line { margin: 9px auto; }
+  .bjx-text { font-size: 11px; line-height: 1.5; }
+} 

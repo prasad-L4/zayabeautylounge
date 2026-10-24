@@ -821,120 +821,67 @@ About Highlights
 
   </div>
 </section>
-<div class="overflow-hidden">
-  <div class="container">
-
-    <div class="counter-area bounce_animation">
-
-      <!-- Experience -->
-      <div class="counter-card_wrapp">
-        <div class="counter-card bounce__anim">
-          <div class="media-body">
-            <h3 class="box-number">
-              <span class="counter-number">10</span>+
-            </h3>
-            <p class="box-text">
-              Years of Experience
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Client Satisfaction -->
-      <div class="counter-card_wrapp">
-        <div class="counter-card bounce__anim">
-          <div class="media-body">
-            <h3 class="box-number">
-              <span class="counter-number">100</span>%
-            </h3>
-            <p class="box-text">
-              Client Satisfaction
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Personalized Care -->
-      <div class="counter-card_wrapp">
-        <div class="counter-card bounce__anim">
-          <div class="media-body">
-            <h3 class="box-number">
-              <span class="counter-number">100</span>%
-            </h3>
-            <p class="box-text">
-              Personalized Care
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Beauty Services -->
-      <div class="counter-card_wrapp">
-        <div class="counter-card bounce__anim">
-          <div class="media-body">
-            <h3 class="box-number">
-              <span class="counter-number">15</span>+
-            </h3>
-            <p class="box-text">
-              Beauty Services
-            </p>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
+<section class="bjx-section">
+ 
+  <div class="bjx-head">
+    <span class="bjx-eyebrow">Your Beauty Journey</span>
+    <h2 class="bjx-title">Starts <em>Here</em></h2>
+    <p class="bjx-sub">Experience personalised beauty care with a passionate team dedicated to bringing out the best version of you.</p>
   </div>
-</div>
-    <div class="position-reletive overflow-hidden space">
-      <div class="container-fluid pe-xl-5 ps-xl-5">
-        <div class="row justify-content-center">
-          <div class="col-xl-8">
-            <div class="title-area text-center d-flex justify-content-center flex-column align-items-center">
-              <h2 class="sec-title text-white">Explore Zaya Gallery</h2>
-              <span class="title-img d-flex align-items-center justify-content-center"
-                ><img src="assets/img/theme-img/title_shape.svg" alt="shape"
-              /></span>
-            </div>
-        
-          </div>
-        </div>
-        <div
-          class="swiper th-slider gallerySlider has-shadow"
-          id="gallerySlider"
-        data-slider-options='{"effect":"slide","loop":false,"spaceBetween":24,"paginationType":"progressbar","breakpoints":{"0":{"slidesPerView":1},"576":{"slidesPerView":2},"768":{"slidesPerView":2},"992":{"slidesPerView":3},"1200":{"slidesPerView":4}}}'
-        >
-        <div class="swiper-wrapper gallery-row">
-          <% (gallery || []).forEach((item) => { %>
-            <div class="swiper-slide">
-              <div class="gallery-card">
-                <div class="box-img th-clip-anim">
-                  <img
-                    class="th-anim-img gallery_img"
-                    data-animate="true"
-                    src="<%= item.image %>"
-                    alt="<%= item.alt_text || item.title || 'Zaya Beauty Lounge gallery' %>"
-                    loading="lazy"
-                  />
-                  <a
-                    href="<%= item.image %>"
-                    class="icon-btn th-popup-image"
-                    aria-label="View <%= item.alt_text || item.title || 'gallery image' %>"
-                  ><i class="far fa-eye"></i></a>
-                </div>
-              </div>
-            </div>
-          <% }); %>
-          <% if (!gallery || !gallery.length) { %>
-            <div class="swiper-slide">
-              <p class="text-center">Gallery images are being added soon.</p>
-            </div>
-          <% } %>
-        </div>
-        <div class="swiper-pagination gallery-pagination" data-slider-id="#gallerySlider"></div>
-      </div>
+ 
+  <!--
+    VIDEO: replace YOUR_VIDEO_ID in BOTH places (embed/ID and playlist=ID).
+    The playlist param is what makes the loop work.
+  -->
+  <div class="bjx-video">
+<iframe
+  src="https://www.youtube.com/embed/kJOAEE9EouE?autoplay=1&mute=1&controls=0&loop=1&playlist=kJOAEE9EouE&modestbranding=1&rel=0&playsinline=1&disablekb=1&fs=0&iv_load_policy=3"
+  title="Zaya Beauty Lounge Showcase Video"
+  frameborder="0"
+  allow="autoplay; encrypted-media"
+  referrerpolicy="strict-origin-when-cross-origin"
+  tabindex="-1"
+  loading="lazy">
+</iframe>
+  </div>
+ 
+  <div class="bjx-cards">
+ 
+    <div class="bjx-card">
+      <div class="bjx-icon"><svg viewBox="0 0 24 24"><path d="M3 18h18M4 18 3 7l5 4 4-6 4 6 5-4-1 11"/></svg></div>
+      <div class="bjx-num">10<span>+</span></div>
+      <h3 class="bjx-label">Years of Experience</h3>
+      <div class="bjx-line"></div>
+      <p class="bjx-text">A decade of expertise in makeup, hair, and beauty care, creating timeless looks.</p>
     </div>
-     </div>
+ 
+    <div class="bjx-card">
+      <div class="bjx-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3"/><circle cx="5" cy="10" r="2"/><circle cx="19" cy="10" r="2"/><path d="M6.5 19c0-3 2.5-5 5.5-5s5.500 2 5.500 5M1.500 18c0-2 1.500-3.500 3.500-3.500M22.500 18c0-2-1.500-3.500-3.500-3.500"/></svg></div>
+      <div class="bjx-num">100<span>%</span></div>
+      <h3 class="bjx-label">Client Satisfaction</h3>
+      <div class="bjx-line"></div>
+      <p class="bjx-text">Our clients’ happiness is at the heart of everything we do.</p>
+    </div>
+ 
+    <div class="bjx-card">
+      <div class="bjx-icon"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.500-7-10a4 4 0 0 1 7-2.500A4 4 0 0 1 19 10c0 5.500-7 10-7 10z"/></svg></div>
+      <div class="bjx-num">100<span>%</span></div>
+      <h3 class="bjx-label">Personalized Care</h3>
+      <div class="bjx-line"></div>
+      <p class="bjx-text">Every look and treatment is tailored to your unique style, needs, and preferences.</p>
+    </div>
+ 
+    <div class="bjx-card">
+      <div class="bjx-icon"><svg viewBox="0 0 24 24"><path d="M12 4c2 2.500 3 5 3 8s-1 5.500-3 8c-2-2.500-3-5-3-8s1-5.500 3-8zM12 20c-3 0-6-2-8-6 3 0 5.500.8 7 2.500M12 20c3 0 6-2 8-6-3 0-5.500.8-7 2.500"/></svg></div>
+      <div class="bjx-num">15<span>+</span></div>
+      <h3 class="bjx-label">Beauty Services</h3>
+      <div class="bjx-line"></div>
+      <p class="bjx-text">A complete range of premium services to make you look and feel your best.</p>
+    </div>
+ 
+  </div>
+</section>
+  
     <section class="overflow-hidden position-relative " id="testi-sec">
       <div class="container-fluid pe-xl-5 ps-xl-5">
         <div class="title-area text-center d-flex flex-column justify-content-center align-items-center">
@@ -1334,6 +1281,56 @@ About Highlights
 
   </div>
 </section>
+
+  <div class="position-reletive overflow-hidden space">
+      <div class="container-fluid pe-xl-5 ps-xl-5">
+        <div class="row justify-content-center">
+          <div class="col-xl-8">
+            <div class="title-area text-center d-flex justify-content-center flex-column align-items-center">
+              <h2 class="sec-title text-white">Explore Zaya Gallery</h2>
+              <span class="title-img d-flex align-items-center justify-content-center"
+                ><img src="assets/img/theme-img/title_shape.svg" alt="shape"
+              /></span>
+            </div>
+        
+          </div>
+        </div>
+        <div
+          class="swiper th-slider gallerySlider has-shadow"
+          id="gallerySlider"
+        data-slider-options='{"effect":"slide","loop":false,"spaceBetween":24,"paginationType":"progressbar","breakpoints":{"0":{"slidesPerView":1},"576":{"slidesPerView":2},"768":{"slidesPerView":2},"992":{"slidesPerView":3},"1200":{"slidesPerView":4}}}'
+        >
+        <div class="swiper-wrapper gallery-row">
+          <% (gallery || []).forEach((item) => { %>
+            <div class="swiper-slide">
+              <div class="gallery-card">
+                <div class="box-img th-clip-anim">
+                  <img
+                    class="th-anim-img gallery_img"
+                    data-animate="true"
+                    src="<%= item.image %>"
+                    alt="<%= item.alt_text || item.title || 'Zaya Beauty Lounge gallery' %>"
+                    loading="lazy"
+                  />
+                  <a
+                    href="<%= item.image %>"
+                    class="icon-btn th-popup-image"
+                    aria-label="View <%= item.alt_text || item.title || 'gallery image' %>"
+                  ><i class="far fa-eye"></i></a>
+                </div>
+              </div>
+            </div>
+          <% }); %>
+          <% if (!gallery || !gallery.length) { %>
+            <div class="swiper-slide">
+              <p class="text-center">Gallery images are being added soon.</p>
+            </div>
+          <% } %>
+        </div>
+        <div class="swiper-pagination gallery-pagination" data-slider-id="#gallerySlider"></div>
+      </div>
+    </div>
+     </div>
 <section class="overflow-hidden  overflow-hidden" id="blog-sec">
   <div class="container">
     <div class="row justify-content-center">
