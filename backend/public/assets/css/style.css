@@ -29879,6 +29879,9 @@ span.select2-selection.select2-selection--single:focus {
 /* ---------- Small phones ---------- */
 @media (max-width: 400px) {
   .zwc-points { grid-template-columns: 1fr; }
+  .bjx-video{
+    max-width: 100%!important;
+  }
 }
 
 .bjx-section {
