@@ -1382,21 +1382,22 @@
 
     /* ---------- WhatsApp booking (reads text from the card itself) ---------- */
     overlay.addEventListener("click", function (e) {
-      var btn = e.target.closest(".zm-book");
-      if (!btn) return;
+      var card = e.target.closest(".zm-card");
+      if (!card) return;
       e.preventDefault();
 
-      var card = btn.closest(".zm-card");
-      var name = card.querySelector(".zm-card__title").textContent.trim();
-      var time = card.querySelector(".zm-card__time").textContent.trim();
-      var price = card.querySelector(".zm-card__price").textContent.trim();
+      var title = card.querySelector(".zm-card__title");
+      var duration = card.querySelector(".zm-card__time");
+      var price = card.querySelector(".zm-card__price");
+      var details = ["Service: " + (title ? title.textContent.trim() : "Selected service")];
+
+      if (duration) details.push("Duration: " + duration.textContent.trim());
+      if (price) details.push("Price: " + price.textContent.trim());
 
       var message =
         "Hello Zaya Beauty Lounge,\n\n" +
         "I would like to book the following service:\n\n" +
-        "Service: " + name + "\n" +
-        "Duration: " + time + "\n" +
-        "Price: " + price + "\n\n" +
+        details.join("\n") + "\n\n" +
         "Please let me know the available slots.\n" +
         "My preferred available time: ";
 
