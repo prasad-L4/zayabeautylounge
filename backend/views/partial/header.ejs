@@ -186,39 +186,41 @@
   function money(n) {
     return n !== null && n !== undefined && n !== ''
       ? '₹ ' + Number(n).toLocaleString('en-IN')
-      : 'Price varies';
+      : '';
   }
 
   /* ---------- render cards ---------- */
   function renderCards(list) {
     cardsEl.innerHTML = list.map(function (s, i) {
-      var duration = s.duration !== null && s.duration !== undefined
-        ? s.duration + ' Mins'
-        : 'Not specified';
+      var hasDuration = s.duration !== null && s.duration !== undefined && s.duration !== '';
+      var hasPrice = s.price !== null && s.price !== undefined && s.price !== '';
+      var duration = hasDuration ? s.duration + ' Mins' : '';
       var price = money(s.price);
       var image = s.images && s.images.length ? s.images[0] : '';
-      var link = '/services/' + encodeURIComponent(s.slug);
       var message =
         'Hello Zaya Beauty Lounge,\n\n' +
         'I would like to book the following service:\n\n' +
         'Service: ' + s.title + '\n' +
-        'Duration: ' + duration + '\n' +
-        'Price: ' + price + '\n\n' +
+        (hasDuration ? 'Duration: ' + duration + '\n' : '') +
+        (hasPrice ? 'Price: ' + price + '\n' : '') +
+        '\n' +
         'Please let me know the available slots.\n' +
         'My preferred available time: ';
       var wa = WA + encodeURIComponent(message);
       return '' +
         '<article class="zy-card" style="--i:' + i + '">' +
-          '<a class="zy-card__img" href="' + esc(link) + '">' +
+          '<div class="zy-card__img">' +
             '<img loading="lazy" src="' + esc(image) + '" alt="' + esc(s.title) + '">' +
-          '</a>' +
+          '</div>' +
           '<div class="zy-card__body">' +
             '<h5>' + esc(s.title) + '</h5>' +
             '<p>' + esc(s.shortDescription || '') + '</p>' +
-            '<div class="zy-card__meta">' +
-              '<span><i class="far fa-clock"></i> ' + esc(duration) + '</span>' +
-              '<strong>' + esc(price) + '</strong>' +
-            '</div>' +
+            (hasDuration || hasPrice
+              ? '<div class="zy-card__meta">' +
+                  (hasDuration ? '<span><i class="far fa-clock"></i> ' + esc(duration) + '</span>' : '') +
+                  (hasPrice ? '<strong>' + esc(price) + '</strong>' : '') +
+                '</div>'
+              : '') +
             '<a class="zy-card__btn" href="' + wa + '" target="_blank" rel="noopener" data-title="' + esc(s.title) + '">' +
               'Book Now <i class="far fa-chevron-right"></i>' +
             '</a>' +
