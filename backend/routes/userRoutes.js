@@ -354,4 +354,104 @@ router.get("/blog/:slug", async (req, res, next) => {
   }
 });
 
+function getSiteUrl(req) {
+  const configured = (process.env.SITE_URL || "").replace(/\/$/, "");
+  if (configured) return configured;
+  return `${req.protocol}://${req.get("host")}`;
+}
+
+function escapeXml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
+function sitemapUrlEntry({ loc, lastmod, changefreq, priority }) {
+  return [
+    "  <url>",
+    `    <loc>${escapeXml(loc)}</loc>`,
+    lastmod ? `    <lastmod>${escapeXml(lastmod)}</lastmod>` : null,
+    changefreq ? `    <changefreq>${escapeXml(changefreq)}</changefreq>` : null,
+    priority ? `    <priority>${escapeXml(priority)}</priority>` : null,
+    "  </url>",
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
+// Dynamic sitemap (static pages + published blogs)
+router.get("/sitemap.xml", async (req, res, next) => {
+  try {
+    const siteUrl = getSiteUrl(req);
+    const blogs = await Blog.find({ status: "published" })
+      .select("slug updatedAt createdAt")
+      .sort({ updatedAt: -1 })
+      .lean();
+
+    const staticPages = [
+      { path: "/", changefreq: "weekly", priority: "1.0" },
+      { path: "/about", changefreq: "monthly", priority: "0.8" },
+      { path: "/services", changefreq: "weekly", priority: "0.9" },
+      { path: "/gallery", changefreq: "weekly", priority: "0.7" },
+      { path: "/blog", changefreq: "daily", priority: "0.9" },
+      { path: "/tips", changefreq: "weekly", priority: "0.6" },
+      { path: "/contact", changefreq: "monthly", priority: "0.7" },
+    ];
+
+    const urls = [
+      ...staticPages.map((page) =>
+        sitemapUrlEntry({
+          loc: `${siteUrl}${page.path}`,
+          changefreq: page.changefreq,
+          priority: page.priority,
+        }),
+      ),
+      ...blogs.map((blog) =>
+        sitemapUrlEntry({
+          loc: `${siteUrl}/blog/${blog.slug}`,
+          lastmod: new Date(blog.updatedAt || blog.createdAt)
+            .toISOString()
+            .split("T")[0],
+          changefreq: "weekly",
+          priority: "0.8",
+        }),
+      ),
+    ];
+
+    const xml = [
+      '<?xml version="1.0" encoding="UTF-8"?>',
+      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+      ...urls,
+      "</urlset>",
+    ].join("\n");
+
+    res
+      .type("application/xml")
+      .set("Cache-Control", "public, max-age=3600")
+      .send(xml);
+  } catch (error) {
+    console.error("SITEMAP ERROR:", error);
+    next(error);
+  }
+});
+
+router.get("/robots.txt", (req, res) => {
+  const siteUrl = getSiteUrl(req);
+  res
+    .type("text/plain")
+    .send(
+      [
+        "User-agent: *",
+        "Allow: /",
+        "Disallow: /admin",
+        "Disallow: /api",
+        `Sitemap: ${siteUrl}/sitemap.xml`,
+        "",
+      ].join("\n"),
+    );
+});
+
 module.exports = router;
