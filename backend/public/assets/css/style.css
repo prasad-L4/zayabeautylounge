@@ -3003,6 +3003,9 @@ hr.title-line {
     rgba(220, 214, 214, 0) 93.75%
   );
 }
+  .main-title{
+    font-size: 65px!important;
+  }
 @media (max-width: 1199px) {
   .sub-title {
     margin-bottom: 20px;
@@ -3011,6 +3014,7 @@ hr.title-line {
   .sec-title {
     --section-title-space: 60px;
   }
+
   .title-area.mb-45,
   .sec-title.mb-45 {
     margin-bottom: 36px;
@@ -3042,6 +3046,9 @@ hr.title-line {
   .shadow-title {
     font-size: 102px;
     line-height: 102px;
+  }
+    .main-title{
+    font-size: 45px!important;
   }
 }
 @media (max-width: 375px) {
